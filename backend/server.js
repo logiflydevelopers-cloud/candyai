@@ -57,10 +57,19 @@ app.get("/", (req, res) => {
 });
 
 /* ===============================
-   EXPORT (IMPORTANT FOR VERCEL)
+   LOCAL SERVER START (IMPORTANT)
+   Only runs locally, NOT on Vercel
 =================================*/
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
-});
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
+/* ===============================
+   EXPORT FOR VERCEL
+=================================*/
+
+module.exports = app;
