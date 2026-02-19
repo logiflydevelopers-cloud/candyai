@@ -1,0 +1,11 @@
+.character-card {
+  background: #1a1a1a;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.character-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}

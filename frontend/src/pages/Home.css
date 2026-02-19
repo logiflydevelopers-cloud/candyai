@@ -1,0 +1,87 @@
+/* ================= Section Title ================= */
+.section-title {
+    font-size: 24px;
+    margin: 20px 0;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* ================= Grid ================= */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* ================= Loading ================= */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+}
+
+/* ================= Banner Spacing ================= */
+.banner-section {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: var(--container-padding);
+}
+
+/* ================= Layout ================= */
+.main-layout {
+    padding: 70px 0px 0px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    transition: margin-left 0.35s ease, width 0.35s ease;
+    will-change: margin-left, width;
+}
+
+/* Desktop Sidebar Expanded */
+.main-layout.expanded {
+    margin-left: 240px;
+    width: calc(100% - 240px);
+}
+
+/* Desktop Sidebar Collapsed */
+.main-layout.collapsed {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 768px) {
+
+    .main-layout,
+    .main-layout.expanded,
+    .main-layout.collapsed {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 50px 0px 0px;
+    }
+
+    .section-title {
+        font-size: 20px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+    }
+
+    .banner-section {
+        padding: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 15px 95px 15px;
+    }
+}

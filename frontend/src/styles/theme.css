@@ -1,0 +1,30 @@
+:root {
+
+    /* ===== CONTAINER ===== */
+    --container-max-width: 1400px;
+    --container-padding: 20px 35px;
+
+    /* ===== COLORS ===== */
+    --primary-color: #ff5c8d;
+    --primary-hover: #ff3d73;
+
+    --bg-dark: #0e0e0e;
+    --bg-card: #1a1a1a;
+    --bg-sidebar: #141414;
+    --bg-input: #2a2a2a;
+
+    --text-main: #ffffff;
+    --text-muted: #b5b5b5;
+
+    --border-color: #2c2c2c;
+
+    /* ===== FONTS ===== */
+    --font-family: "Poppins", sans-serif;
+
+    /* ===== RADIUS ===== */
+    --radius-lg: 20px;
+    --radius-md: 10px;
+
+    /* ===== TRANSITION ===== */
+    --transition-fast: 0.3s ease;
+}
