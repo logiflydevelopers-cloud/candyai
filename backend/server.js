@@ -60,4 +60,7 @@ app.get("/", (req, res) => {
    EXPORT (IMPORTANT FOR VERCEL)
 =================================*/
 
-module.exports = app;
+app.listen(5000, () => {
+  console.log("Server running on port 5000");
+});
+
