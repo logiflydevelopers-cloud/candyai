@@ -1,10 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? "https://candyai.onrender.com/api"
-      : "http://localhost:5000/api"
+  baseURL: "https://candyai.onrender.com/api",
 });
 
 // Request interceptor (optional but recommended)

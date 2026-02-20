@@ -41,10 +41,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL:
-        process.env.NODE_ENV === "production"
-          ? "https://candyai.onrender.com/api/auth/google/callback"
-          : "http://localhost:5000/api/auth/google/callback"
+      callbackURL: "https://candyai.onrender.com/api/auth/google/callback"
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -86,7 +83,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "https://candyai-frontend-eosin.vercel.app"
+    failureRedirect: "http://localhost:3000"
   }),
   async (req, res) => {
 
@@ -107,7 +104,7 @@ router.get(
     }));
 
     res.redirect(
-      `https://candyai-frontend-eosin.vercel.app/google-success?token=${token}&user=${userData}`
+      `http://localhost:3000/google-success?token=${token}&user=${userData}`
     );
   }
 );
