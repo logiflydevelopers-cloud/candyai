@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
+const serverless = require("serverless-http");
 
 require("dotenv").config();
 
@@ -74,9 +75,16 @@ async function connectDB() {
   return cached.conn;
 }
 
-connectDB();
+// IMPORTANT: connect before handling request
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
 
-/* LOCAL SERVER */
+/* ===============================
+   LOCAL SERVER (ONLY FOR LOCAL)
+=================================*/
+
 if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 5000;
 
@@ -86,3 +94,9 @@ if (process.env.NODE_ENV !== "production") {
     });
   });
 }
+
+/* ===============================
+   VERCEL EXPORT
+=================================*/
+
+module.exports = serverless(app);
