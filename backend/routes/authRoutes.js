@@ -86,7 +86,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:3000"
+    failureRedirect: "https://candyai-frontend-eosin.vercel.app"
   }),
   async (req, res) => {
 
@@ -107,7 +107,7 @@ router.get(
     }));
 
     res.redirect(
-      `http://localhost:3000/google-success?token=${token}&user=${userData}`
+      `https://candyai-frontend-eosin.vercel.app/google-success?token=${token}&user=${userData}`
     );
   }
 );
