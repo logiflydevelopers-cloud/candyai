@@ -35,10 +35,10 @@ app.use(passport.session());
    ROUTES
 =================================*/
 
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/character", require("./routes/characterRoutes"));
-app.use("/api/banner", require("./routes/bannerRoutes"));
-app.use("/api/story", require("./routes/storyRoutes"));
+app.use("/api/auth", require("../routes/authRoutes"));
+app.use("/api/character", require("../routes/characterRoutes"));
+app.use("/api/banner", require("../routes/bannerRoutes"));
+app.use("/api/story", require("../routes/storyRoutes"));
 
 /* ===============================
    ROOT ROUTE
@@ -64,7 +64,7 @@ async function connectDB() {
   if (!cached.promise) {
     cached.promise = mongoose.connect(process.env.MONGO_URI, {
       bufferCommands: false,
-    }).then(mongoose => mongoose);
+    }).then((mongoose) => mongoose);
   }
 
   cached.conn = await cached.promise;
