@@ -9,14 +9,6 @@ require("dotenv").config();
 const app = express();
 
 /* ===============================
-   BASIC SECURITY CHECK
-=================================*/
-
-if (!process.env.MONGO_URI) {
-  console.error("MONGO_URI is missing in environment variables");
-}
-
-/* ===============================
    MIDDLEWARE
 =================================*/
 
@@ -34,10 +26,6 @@ app.use(session({
   secret: process.env.JWT_SECRET || "supersecret",
   resave: false,
   saveUninitialized: false,
-  cookie: {
-    secure: process.env.NODE_ENV === "production",
-    httpOnly: true
-  }
 }));
 
 app.use(passport.initialize());
@@ -53,7 +41,7 @@ app.use("/api/banner", require("./routes/bannerRoutes"));
 app.use("/api/story", require("./routes/storyRoutes"));
 
 /* ===============================
-   ROOT TEST ROUTE
+   ROOT ROUTE
 =================================*/
 
 app.get("/", (req, res) => {
@@ -64,26 +52,23 @@ app.get("/", (req, res) => {
    DATABASE CONNECTION
 =================================*/
 
-if (!mongoose.connections[0].readyState) {
-  mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-    .then(() => console.log("MongoDB Connected"))
-    .catch(err => console.error("Mongo Error:", err));
-}
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.error("Mongo Error:", err));
 
 /* ===============================
-   LOCAL SERVER START
-   (Vercel ignores this)
+   LOCAL SERVER ONLY
 =================================*/
 
-const PORT = process.env.PORT || 5000;
-
-connectDB().then(() => {
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
   });
-});
+}
 
-export default app;
+/* ===============================
+   EXPORT FOR VERCEL
+=================================*/
+
+module.exports = app;
