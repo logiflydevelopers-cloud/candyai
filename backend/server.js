@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
+const serverless = require("serverless-http");
 
 require("dotenv").config();
 
@@ -32,13 +33,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 /* ===============================
-   ROUTES
+   ROUTES  (FIXED PATHS)
 =================================*/
 
-app.use("/api/auth", require("../routes/authRoutes"));
-app.use("/api/character", require("../routes/characterRoutes"));
-app.use("/api/banner", require("../routes/bannerRoutes"));
-app.use("/api/story", require("../routes/storyRoutes"));
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/character", require("./routes/characterRoutes"));
+app.use("/api/banner", require("./routes/bannerRoutes"));
+app.use("/api/story", require("./routes/storyRoutes"));
 
 /* ===============================
    ROOT ROUTE
@@ -71,10 +72,11 @@ async function connectDB() {
   return cached.conn;
 }
 
-connectDB();
-
 /* ===============================
-   EXPORT FOR VERCEL
+   EXPORT FOR VERCEL (IMPORTANT)
 =================================*/
 
-module.exports = app;
+module.exports = async (req, res) => {
+  await connectDB();
+  return serverless(app)(req, res);
+};
