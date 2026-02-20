@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
-const serverless = require("serverless-http");
 
 require("dotenv").config();
 
@@ -33,7 +32,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 /* ===============================
-   ROUTES  (FIXED PATHS)
+   ROUTES
 =================================*/
 
 app.use("/api/auth", require("./routes/authRoutes"));
@@ -65,17 +64,30 @@ async function connectDB() {
   if (!cached.promise) {
     cached.promise = mongoose.connect(process.env.MONGO_URI, {
       bufferCommands: false,
-    }).then((mongoose) => mongoose);
+    }).then((mongoose) => {
+      console.log("MongoDB Connected ✅");
+      return mongoose;
+    });
   }
 
   cached.conn = await cached.promise;
   return cached.conn;
 }
 
-/* ===============================
-   EXPORT FOR VERCEL (IMPORTANT)
-=================================*/
+connectDB();
 
+/* LOCAL SERVER */
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+
+  connectDB().then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT} 🚀`);
+    });
+  });
+}
+
+/* VERCEL EXPORT */
 module.exports = async (req, res) => {
   await connectDB();
   return serverless(app)(req, res);
