@@ -86,9 +86,3 @@ if (process.env.NODE_ENV !== "production") {
     });
   });
 }
-
-/* VERCEL EXPORT */
-module.exports = async (req, res) => {
-  await connectDB();
-  return serverless(app)(req, res);
-};
