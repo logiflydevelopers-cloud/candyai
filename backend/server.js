@@ -49,23 +49,29 @@ app.get("/", (req, res) => {
 });
 
 /* ===============================
-   DATABASE CONNECTION
+   DATABASE CONNECTION (Vercel Safe)
 =================================*/
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.error("Mongo Error:", err));
+let cached = global.mongoose;
 
-/* ===============================
-   LOCAL SERVER ONLY
-=================================*/
-
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-  });
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
 }
+
+async function connectDB() {
+  if (cached.conn) return cached.conn;
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(process.env.MONGO_URI, {
+      bufferCommands: false,
+    }).then(mongoose => mongoose);
+  }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
+
+connectDB();
 
 /* ===============================
    EXPORT FOR VERCEL
