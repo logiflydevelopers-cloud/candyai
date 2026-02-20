@@ -8,18 +8,10 @@ require("dotenv").config();
 
 const app = express();
 
-/* ===============================
-   MIDDLEWARE
-=================================*/
-
-app.use(cors({
-  origin: true,
-  credentials: true
-}));
-
+/* MIDDLEWARE */
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use("/uploads", express.static("uploads"));
 
 app.use(session({
@@ -31,29 +23,19 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-/* ===============================
-   ROUTES
-=================================*/
-
+/* ROUTES */
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/character", require("./routes/characterRoutes"));
 app.use("/api/banner", require("./routes/bannerRoutes"));
 app.use("/api/story", require("./routes/storyRoutes"));
 
-/* ===============================
-   ROOT ROUTE
-=================================*/
-
+/* ROOT */
 app.get("/", (req, res) => {
   res.json({ success: true, message: "Backend running 🚀" });
 });
 
-/* ===============================
-   DATABASE CONNECTION (Vercel Safe)
-=================================*/
-
+/* DATABASE */
 let cached = global.mongoose;
-
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
@@ -62,32 +44,15 @@ async function connectDB() {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(process.env.MONGO_URI, {
-      bufferCommands: false,
-    }).then((mongoose) => {
-      console.log("MongoDB Connected ✅");
-      return mongoose;
-    });
+    cached.promise = mongoose.connect(process.env.MONGO_URI)
+      .then((mongoose) => {
+        console.log("MongoDB Connected ✅");
+        return mongoose;
+      });
   }
 
   cached.conn = await cached.promise;
   return cached.conn;
 }
 
-connectDB(); 
-
-/* LOCAL SERVER */
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 5000;
-
-  connectDB().then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT} 🚀`);
-    });
-  });
-}
-
-module.exports = async (req, res) => {
-  await connectDB();
-  return serverless(app)(req, res);
-};
+module.exports = { app, connectDB };
