@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
-const serverless = require("serverless-http");
 
 require("dotenv").config();
 
@@ -41,62 +40,24 @@ app.use("/api/character", require("./routes/characterRoutes"));
 app.use("/api/banner", require("./routes/bannerRoutes"));
 app.use("/api/story", require("./routes/storyRoutes"));
 
-/* ===============================
-   ROOT ROUTE
-=================================*/
-
 app.get("/", (req, res) => {
   res.json({ success: true, message: "Backend running 🚀" });
 });
 
 /* ===============================
-   DATABASE CONNECTION (Vercel Safe)
+   DATABASE
 =================================*/
 
-let cached = global.mongoose;
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected ✅"))
+  .catch(err => console.log(err));
 
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
+/* ===============================
+   START SERVER (Render)
+=================================*/
 
-async function connectDB() {
-  if (cached.conn) return cached.conn;
+const PORT = process.env.PORT;
 
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(process.env.MONGO_URI, {
-      bufferCommands: false,
-    }).then((mongoose) => {
-      console.log("MongoDB Connected ✅");
-      return mongoose;
-    });
-  }
-
-  cached.conn = await cached.promise;
-  return cached.conn;
-}
-
-// IMPORTANT: connect before handling request
-app.use(async (req, res, next) => {
-  await connectDB();
-  next();
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT} 🚀`);
 });
-
-/* ===============================
-   LOCAL SERVER (ONLY FOR LOCAL)
-=================================*/
-
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 5000;
-
-  connectDB().then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT} 🚀`);
-    });
-  });
-}
-
-/* ===============================
-   VERCEL EXPORT
-=================================*/
-
-module.exports = serverless(app);
