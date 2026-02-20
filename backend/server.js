@@ -57,7 +57,7 @@ app.use("/api/story", require("./routes/storyRoutes"));
 =================================*/
 
 app.get("/", (req, res) => {
-  res.status(200).send("API Running");
+  res.json({ success: true, message: "Backend running 🚀" });
 });
 
 /* ===============================
@@ -78,15 +78,12 @@ if (!mongoose.connections[0].readyState) {
    (Vercel ignores this)
 =================================*/
 
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
+
+connectDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
   });
-}
+});
 
-/* ===============================
-   EXPORT FOR VERCEL
-=================================*/
-
-module.exports = app;
+export default app;
