@@ -52,7 +52,7 @@ function Login({ openRegister, close, openForgot }) {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:5000/api/auth/google";
+    window.location.href = "https://candyai.onrender.com/api/auth/google";
   };
 
   return (

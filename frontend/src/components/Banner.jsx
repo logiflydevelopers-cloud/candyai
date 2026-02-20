@@ -101,7 +101,7 @@ function Banner({ category }) {
           return (
             <div className="banner-slide" key={index}>
               <img
-                src={`http://localhost:5000/${imagePath?.replace(
+                src={`https://candyai.onrender.com/${imagePath?.replace(
                   "uploads\\",
                   "uploads/"
                 )}`}

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import API from "../api/axios";
 import "./Stories.css";
 
-const BASE_URL = "http://localhost:5000/uploads/";
+const BASE_URL = "https://candyai.onrender.com/uploads/";
 
 function Stories({ category }) {
   const [stories, setStories] = useState([]);
