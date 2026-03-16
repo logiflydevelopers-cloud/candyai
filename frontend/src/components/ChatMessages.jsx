@@ -292,7 +292,7 @@ function ChatMessages({ character, messages, setMessages }) {
                             <div className="image-message">
 
                                 <img
-                                    src={`http://localhost:5000/uploads/${msg.media}`}
+                                    src={`https://candyai.onrender.com/uploads/${msg.media}`}
                                     className="chat-image"
                                 />
 
@@ -316,7 +316,7 @@ function ChatMessages({ character, messages, setMessages }) {
                                     onContextMenu={(e) => e.preventDefault()}
                                     className="chat-video"
                                 >
-                                    <source src={`http://localhost:5000/uploads/${msg.media}`} />
+                                    <source src={`https://candyai.onrender.com/uploads/${msg.media}`} />
                                 </video>
 
                                 <div className={`message-bubble ${msg.sender}`}>
@@ -338,7 +338,7 @@ function ChatMessages({ character, messages, setMessages }) {
 
                                     <video
                                         className="locked-video-preview"
-                                        src={`http://localhost:5000/uploads/${msg.media}`}
+                                        src={`https://candyai.onrender.com/uploads/${msg.media}`}
                                     />
 
                                     <div className="locked-overlay">

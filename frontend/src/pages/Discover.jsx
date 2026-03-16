@@ -169,7 +169,7 @@ function Discover() {
                         {/* VIDEO */}
                         <video
                             ref={(el) => (videoRefs.current[index] = el)}
-                            src={`http://localhost:5000/uploads/${char.video}`}
+                            src={`https://candyai.onrender.com/uploads/${char.video}`}
                             className="reel-video"
                             loop
                             muted
@@ -211,7 +211,7 @@ function Discover() {
                         <div className="reel-info">
 
                             <img
-                                src={`http://localhost:5000/uploads/${char.images?.[0]}`}
+                                src={`https://candyai.onrender.com/uploads/${char.images?.[0]}`}
                                 className="reel-avatar"
                                 alt=""
                             />
