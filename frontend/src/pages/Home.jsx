@@ -14,7 +14,7 @@ function Home({ category, sidebarOpen, children }) {
   useEffect(() => {
     if (!category) return;
 
-    API.get(`/character/${category}`)
+    API.get(`/characters?category=${category}`)
       .then((res) => {
         setCharacters(res.data || []);
       })
@@ -34,6 +34,8 @@ function Home({ category, sidebarOpen, children }) {
       <div className="container">
 
         <Stories category={category} />
+
+        <CharacterCard mainCategory={category} />
 
         {children && (
           <div className="custom-page-content">

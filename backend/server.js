@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
+const chatRoutes = require("./routes/chatRoutes");
 
 require("dotenv").config();
 
@@ -36,9 +37,10 @@ app.use(passport.session());
 =================================*/
 
 app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/character", require("./routes/characterRoutes"));
+app.use("/api/characters", require("./routes/characterRoutes"));  
 app.use("/api/banner", require("./routes/bannerRoutes"));
 app.use("/api/story", require("./routes/storyRoutes"));
+app.use("/api/chat", require("./routes/chatRoutes"));
 
 app.get("/", (req, res) => {
   res.json({ success: true, message: "Backend running 🚀" });
@@ -53,10 +55,10 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log(err));
 
 /* ===============================
-   START SERVER (Render)
+   START SERVER
 =================================*/
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT} 🚀`);

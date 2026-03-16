@@ -1,0 +1,290 @@
+.discover-page {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    background: #0d0d0f;
+
+}
+
+/* ROW */
+
+.reel-row {
+    height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    scroll-snap-align: start;
+}
+
+/* CARD */
+
+.reel-card {
+    width: 380px;
+    height: 550px;
+    border-radius: 22px;
+    overflow: hidden;
+    position: relative;
+    background: black;
+}
+
+/* VIDEO */
+
+.reel-video {
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+
+}
+
+/* INFO */
+
+.reel-info {
+
+    position: absolute;
+    bottom: 25px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.reel-avatar {
+
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+
+}
+
+.reel-name {
+
+    color: white;
+    font-weight: 600;
+
+}
+
+.chat-btn {
+
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+
+}
+
+/* RIGHT LIKE */
+
+.reel-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.like-icon {
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.like-icon.liked {
+    color: #ff2e63;
+    transform: scale(1.2);
+}
+
+.like-count {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* BACK BUTTON */
+
+.discover-mobile-back {
+
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 26px;
+    color: white;
+    cursor: pointer;
+    z-index: 5;
+
+}
+
+/* LOADING */
+
+.video-loader {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.spinner {
+
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+
+}
+
+@keyframes spin {
+
+    0% {
+        transform: rotate(0)
+    }
+
+    100% {
+        transform: rotate(360deg)
+    }
+
+}
+
+/* PAUSE */
+
+.pause-overlay {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+    color: white;
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px) {
+
+    .reel-row {
+
+        flex-direction: column;
+        gap: 0;
+
+    }
+
+    .reel-card {
+
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+
+    }
+
+    .reel-actions {
+
+        position: absolute;
+        right: 15px;
+        bottom: 30px;
+
+    }
+
+}
+
+
+.like-icon {
+
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+
+}
+
+.like-icon.liked {
+
+    color: #ff2d55;
+    transform: scale(1.5);
+
+    animation: likePop 0.4s ease;
+
+}
+
+@keyframes likePop {
+
+    0% {
+        transform: scale(0.8)
+    }
+
+    50% {
+        transform: scale(1.6)
+    }
+
+    100% {
+        transform: scale(1)
+    }
+
+}
+
+.discover-mobile-back {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 17px;
+    color: white;
+    z-index: 10;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 5px 12px;
+    border-radius: 50%;
+
+}
+
+.reel-actions {
+    position: absolute;
+    right: 15px;
+    bottom: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: white;
+    z-index: 5;
+}
+
+.like-icon {
+    font-size: 28px;
+    cursor: pointer;
+    color: white;
+    transition: 0.3s;
+}
+
+.like-icon:hover {
+    transform: scale(1.15);
+}
+
+.like-icon.liked {
+    color: #ff2e63;
+    transform: scale(1.2);
+}
+
+.like-count {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+@media(min-width:769px) {
+
+    .discover-mobile-back {
+        display: none;
+    }
+
+}

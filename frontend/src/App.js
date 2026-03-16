@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,6 +20,7 @@ import PersonalizeModal from "./pages/auth/PersonalizeModal";
 
 import Chat from "./pages/Chat";
 import Collection from "./pages/Collection";
+import CharacterCollection from "./pages/CharacterCollection";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GoogleSuccess from "./pages/auth/GoogleSuccess";
 import Settings from "./pages/Settings";
@@ -44,12 +46,16 @@ import ComplaintPolicy from "./pages/legal/ComplaintPolicy";
 import Exemption2257 from "./pages/legal/Exemption2257";
 import CommunityGuidelines from "./pages/legal/CommunityGuidelines";
 
+import Discover from "./pages/Discover";
+
 
 
 
 import "./App.css";
 
-function App() {
+function AppContent() {
+
+  const location = useLocation();
 
   const [sidebarOpen, setSidebarOpen] = useState(
     window.innerWidth > 768
@@ -58,6 +64,15 @@ function App() {
   const [disableTransition, setDisableTransition] = useState(false);
   const [authModal, setAuthModal] = useState(null);
   const [showPersonalize, setShowPersonalize] = useState(false);
+
+
+
+  const hideNavbarMobile =
+    window.innerWidth <= 768 &&
+    (
+      location.pathname === "/discover" ||
+      /^\/chat\/[^/]+/.test(location.pathname)
+    );
 
   /* ===============================
      LOGIN OPEN EVENT
@@ -140,14 +155,16 @@ function App() {
   };
 
   return (
-    <Router>
+    <>
 
       <div className={authModal || showPersonalize ? "app-blur" : ""}>
-        <Navbar
-          toggleSidebar={toggleSidebar}
-          sidebarOpen={sidebarOpen}
-          setAuthModal={setAuthModal}
-        />
+        {!hideNavbarMobile && (
+          <Navbar
+            toggleSidebar={toggleSidebar}
+            sidebarOpen={sidebarOpen}
+            setAuthModal={setAuthModal}
+          />
+        )}
 
         <Sidebar
           open={sidebarOpen}
@@ -168,15 +185,29 @@ function App() {
           <Route path="/anime" element={<Anime sidebarOpen={sidebarOpen} />} />
           <Route path="/guys" element={<Guys sidebarOpen={sidebarOpen} />} />
 
+          <Route
+            path="/discover"
+            element={<Discover sidebarOpen={sidebarOpen} />}
+          />
+
 
 
           <Route path="/google-success" element={<GoogleSuccess />} />
 
           <Route
+            path="/chat/:characterId"
+            element={
+              <ProtectedRoute setAuthModal={setAuthModal}>
+                <Chat sidebarOpen={sidebarOpen} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
             path="/chat"
             element={
               <ProtectedRoute setAuthModal={setAuthModal}>
-                <Chat />
+                <Chat sidebarOpen={sidebarOpen} />
               </ProtectedRoute>
             }
           />
@@ -185,7 +216,16 @@ function App() {
             path="/collection"
             element={
               <ProtectedRoute setAuthModal={setAuthModal}>
-                <Collection />
+                <Collection sidebarOpen={sidebarOpen} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/collection/:id"
+            element={
+              <ProtectedRoute setAuthModal={setAuthModal}>
+                <CharacterCollection sidebarOpen={sidebarOpen} />
               </ProtectedRoute>
             }
           />
@@ -302,8 +342,17 @@ function App() {
         />
       )}
 
+    </>
+  );
+}
+function App() {
+
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
+
 }
 
 export default App;
