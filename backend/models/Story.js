@@ -11,7 +11,7 @@ const storySchema = new mongoose.Schema({
   category: { type: String, required: true },
   characterName: { type: String, required: true },
 
-  profileImage: {   
+  profileImage: {
     type: String,
   },
 

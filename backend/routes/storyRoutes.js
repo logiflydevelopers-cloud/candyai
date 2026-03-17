@@ -97,10 +97,8 @@ router.post(
         }
 
         // ❌ Prevent changing profile if already exists
-        if (story.profileImage && profileFile) {
-          return res.status(400).json({
-            message: "Profile image already exists"
-          });
+        if (profileFile) {
+          story.profileImage = profileFile.filename;
         }
 
         // ❌ Max 4 stories
