@@ -131,7 +131,7 @@ function Chat({ sidebarOpen }) {
 
     loadChat();
 
-  }, [characterId]);
+  }, [characterId, loadChats]);
 
   return (
 
@@ -183,7 +183,7 @@ function Chat({ sidebarOpen }) {
 
                   <img
                     src={`https://candyai.onrender.com/uploads/${character.images[0]}`}
-                    alt=""
+                    alt={character.name || "avatar"}
                     onClick={() => {
 
                       if (window.innerWidth <= 768) {

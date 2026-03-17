@@ -103,6 +103,7 @@ function Collection({ sidebarOpen }) {
                           : "/placeholder.jpg"
                       }
                       className="character-avatar"
+                      alt={item.character.name || "character"}
                     />
 
                     <div>
@@ -136,6 +137,7 @@ function Collection({ sidebarOpen }) {
                           : "/placeholder.jpg"
                     }
                     className="character-preview"
+                    alt="preview"
                   />
 
                 </div>

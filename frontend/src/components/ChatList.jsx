@@ -37,24 +37,24 @@ function ChatList({ conversations, navigate, active, refresh, mobileOpen, closeM
     const [deleteName, setDeleteName] = useState("")
 
     const confirmReset = async () => {
-
         try {
+            await API.post(`/chat/reset/${resetId}`);
 
-            await API.post(`/chat/reset/${resetId}`)
+            setResetModal(false);
 
-            setResetModal(false)
+            await refresh();
 
-            refresh()
+            navigate(`/chat/${resetId}`, { replace: true });
 
-            navigate(`/chat/${resetId}`, { replace: true })
-
-            window.location.reload()
+            // optional but works perfectly
+            setTimeout(() => {
+                window.location.reload();
+            }, 200);
 
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
-
-    }
+    };
 
     const filtered = conversations
         .filter(chat => chat.characterId)
@@ -63,26 +63,6 @@ function ChatList({ conversations, navigate, active, refresh, mobileOpen, closeM
                 ?.toLowerCase()
                 .includes(search.toLowerCase())
         );
-
-    // ✅ RESET CHAT
-    const resetChat = async (e, characterId) => {
-        e.stopPropagation();
-
-        try {
-
-            await API.post(`/chat/reset/${characterId}`);
-
-            refresh();
-
-            // force chat reload
-            navigate(`/chat/${characterId}`, { replace: true });
-
-            if (closeMobile) closeMobile();
-
-        } catch (err) {
-            console.log(err);
-        }
-    };
 
     const confirmDelete = async () => {
 

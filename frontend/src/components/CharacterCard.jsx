@@ -170,7 +170,7 @@ function CharacterCard({ mainCategory }) {
 
     fetchCharacters();
 
-  }, [mainCategory, selectedCategory, search]);
+  }, [mainCategory, selectedCategory, search, currentCategory]);
 
   return (
 

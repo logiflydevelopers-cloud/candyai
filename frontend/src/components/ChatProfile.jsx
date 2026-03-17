@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { IoChevronBack } from "react-icons/io5";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
@@ -19,7 +19,6 @@ import personality from "../image/personality.svg";
 
 function ChatProfile({ character, onBack }) {
 
-  const [activeSlide, setActiveSlide] = useState(0);
   const videoRef = useRef(null);
 
   if (!character) return null;
@@ -58,7 +57,6 @@ function ChatProfile({ character, onBack }) {
               videoRef.current?.pause();
             }
 
-            setActiveSlide(swiper.activeIndex);
           }}
 
         >
@@ -71,7 +69,7 @@ function ChatProfile({ character, onBack }) {
                 <img
                   src={`https://candyai.onrender.com/uploads/${item.src}`}
                   className="profile-media-img"
-                  alt=""
+                  alt={`${character.name} media`}
                 />
               )}
 
@@ -127,7 +125,7 @@ function ChatProfile({ character, onBack }) {
         <div className="about-grid">
 
           <div className="about-item">
-            <img src={age} />
+            <img src={age} alt="age icon" />
             <div>
               <span>AGE</span>
               <p>{character.age}</p>
@@ -135,7 +133,7 @@ function ChatProfile({ character, onBack }) {
           </div>
 
           <div className="about-item">
-            <img src={body} />
+            <img src={body} alt="body icon" />
             <div>
               <span>BODY</span>
               <p>{character.body}</p>
@@ -143,7 +141,7 @@ function ChatProfile({ character, onBack }) {
           </div>
 
           <div className="about-item">
-            <img src={ethnicity} />
+            <img src={ethnicity} alt="ethnicity icon" />
             <div>
               <span>ETHNICITY</span>
               <p>{character.ethnicity}</p>
@@ -151,7 +149,7 @@ function ChatProfile({ character, onBack }) {
           </div>
 
           <div className="about-item">
-            <img src={language} />
+            <img src={language} alt="language icon" />
             <div>
               <span>LANGUAGE</span>
               <p>{character.language}</p>
@@ -159,7 +157,7 @@ function ChatProfile({ character, onBack }) {
           </div>
 
           <div className="about-item">
-            <img src={relationship} />
+            <img src={relationship} alt="relationship icon" />
             <div>
               <span>RELATIONSHIP</span>
               <p>{character.relationship}</p>
@@ -167,7 +165,7 @@ function ChatProfile({ character, onBack }) {
           </div>
 
           <div className="about-item">
-            <img src={Occupation} />
+            <img src={Occupation} alt="occupation icon" />
             <div>
               <span>OCCUPATION</span>
               <p>{character.occupation}</p>
@@ -175,7 +173,7 @@ function ChatProfile({ character, onBack }) {
           </div>
 
           <div className="about-item">
-            <img src={hobby} />
+            <img src={hobby} alt="hobby icon" />
             <div>
               <span>HOBBIES</span>
               <p>{character.hobbies}</p>
@@ -183,7 +181,7 @@ function ChatProfile({ character, onBack }) {
           </div>
 
           <div className="about-item">
-            <img src={personality} />
+            <img src={personality} alt="personality icon" />
             <div>
               <span>PERSONALITY</span>
               <p>{character.personality}</p>

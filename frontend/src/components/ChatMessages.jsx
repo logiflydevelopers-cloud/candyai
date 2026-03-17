@@ -294,6 +294,7 @@ function ChatMessages({ character, messages, setMessages }) {
                                 <img
                                     src={`https://candyai.onrender.com/uploads/${msg.media}`}
                                     className="chat-image"
+                                    alt="chat media"
                                 />
 
                                 <div className={`message-bubble ${msg.sender}`}>
@@ -339,6 +340,7 @@ function ChatMessages({ character, messages, setMessages }) {
                                     <video
                                         className="locked-video-preview"
                                         src={`https://candyai.onrender.com/uploads/${msg.media}`}
+                                        aria-label="locked video preview"
                                     />
 
                                     <div className="locked-overlay">
