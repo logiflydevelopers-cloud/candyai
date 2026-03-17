@@ -9,6 +9,7 @@ function Stories({ category }) {
   const [activeUser, setActiveUser] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const timerRef = useRef(null);
   const videoRef = useRef(null);
@@ -41,6 +42,8 @@ function Stories({ category }) {
   useEffect(() => {
     if (!category) return;
 
+    setLoading(true);
+
     API.get(`/story?category=${category}`).then((res) => {
       const seen = JSON.parse(localStorage.getItem("seenStories")) || [];
 
@@ -56,6 +59,7 @@ function Stories({ category }) {
       ];
 
       setStories(sorted);
+      setLoading(false);
     });
   }, [category]);
 
@@ -200,25 +204,34 @@ function Stories({ category }) {
     <>
       {/* PROFILE ROW */}
       <div className="ig-row">
-        {stories.map((story, index) => (
-          <div
-            key={story._id}
-            className={`ig-item ${story.seen ? "seen" : ""}`}
-            onClick={() => openStory(index)}
-          >
-            <div className="ig-ring">
-              <img src={BASE_URL + story.profileImage} alt="" />
+        {loading
+          ? Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="ig-item">
+              <div className="skeleton-ring-border">
+                <div className="ig-ring skeleton-ring"></div>
+              </div>
+              <div className="skeleton-text"></div>
             </div>
-            <span>{story.characterName}</span>
-          </div>
-        ))}
+          ))
+          : stories.map((story, index) => (
+            <div
+              key={story._id}
+              className={`ig-item ${story.seen ? "seen" : ""}`}
+              onClick={() => openStory(index)}
+            >
+              <div className="ig-ring">
+                <img src={BASE_URL + story.profileImage} alt="" />
+              </div>
+              <span>{story.characterName}</span>
+            </div>
+          ))}
       </div>
 
       {/* STORY VIEWER */}
       {activeUser !== null && stories[activeUser] && (
         <div className="ig-modal">
           <div className="ig-view" onClick={handleClick}>
-            
+
             {/* PROGRESS */}
             <div className="ig-progress">
               {stories[activeUser]?.stories?.map((_, i) => (
@@ -230,8 +243,8 @@ function Stories({ category }) {
                         i === activeIndex
                           ? `${progress}%`
                           : i < activeIndex
-                          ? "100%"
-                          : "0%",
+                            ? "100%"
+                            : "0%",
                     }}
                   />
                 </div>

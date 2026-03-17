@@ -181,8 +181,10 @@ function Discover() {
 
                         {/* LOADING */}
                         {loadingIndex === index && (
-                            <div className="video-loader">
-                                <div className="spinner"></div>
+                            <div className="skeleton-loader">
+                                <div className="skeleton-avatar"></div>
+                                <div className="skeleton-text short"></div>
+                                <div className="skeleton-text long"></div>
                             </div>
                         )}
 

@@ -836,37 +836,14 @@
             transparent,
             rgba(255, 255, 255, 0.15),
             transparent);
-
-    animation: shimmer 1.6s infinite;
 }
 
-@keyframes shimmer {
 
-    0% {
-        left: -150px;
-    }
-
-    100% {
-        left: 100%;
-    }
-
-}
 
 .sk-line.short {
     width: 45%;
 }
 
-@keyframes skeleton-loading {
-
-    0% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0 50%;
-    }
-
-}
 
 
 .profile-wrapper {
@@ -899,6 +876,7 @@
     height: 460px;
     object-fit: cover;
     display: block;
+    object-position: top;
 }
 
 /* HEADER */

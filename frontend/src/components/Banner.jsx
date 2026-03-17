@@ -9,6 +9,7 @@ function Banner({ category }) {
   const [transition, setTransition] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const intervalRef = useRef(null);
+  const [loading, setLoading] = useState(true);
 
   /* Detect screen resize */
   useEffect(() => {
@@ -19,13 +20,14 @@ function Banner({ category }) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  
+
 
   /* ================= FETCH ================= */
   useEffect(() => {
     if (!category) return;
 
     clearInterval(intervalRef.current);
+    setLoading(true); // ✅ start loading
 
     API.get(`/banner/${category}`).then((res) => {
       if (res.data && res.data.length > 0) {
@@ -40,6 +42,8 @@ function Banner({ category }) {
 
         setCurrent(1);
       }
+
+      setLoading(false); // ✅ stop loading
     });
   }, [category]);
 
@@ -81,6 +85,14 @@ function Banner({ category }) {
 
   const next = () => setCurrent((prev) => prev + 1);
   const prev = () => setCurrent((prev) => prev - 1);
+
+  if (loading) {
+    return (
+      <div className="banner-skeleton">
+        <div className="shimmer"></div>
+      </div>
+    );
+  }
 
   if (slides.length === 0) return null;
 
@@ -126,6 +138,7 @@ function Banner({ category }) {
         ))}
       </div>
     </div>
+
   );
 }
 

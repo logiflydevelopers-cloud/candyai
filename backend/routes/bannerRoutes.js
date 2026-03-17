@@ -88,24 +88,36 @@ router.get("/:category", async (req, res) => {
 ================================ */
 router.delete("/:id", async (req, res) => {
   try {
-    const banner = await Banner.findById(req.params.id);
+    const bannerId = req.params.id;
 
-    if (!banner) {
+    // Find category document jema aa banner hoy
+    const categoryDoc = await Banner.findOne({
+      "banners._id": bannerId
+    });
+
+    if (!categoryDoc) {
       return res.status(404).json({ error: "Banner not found" });
     }
 
-    // Delete images from uploads folder
-    if (fs.existsSync(banner.desktopImage)) {
+    // Find exact banner
+    const banner = categoryDoc.banners.id(bannerId);
+
+    // Delete images from folder
+    if (banner?.desktopImage && fs.existsSync(banner.desktopImage)) {
       fs.unlinkSync(banner.desktopImage);
     }
 
-    if (fs.existsSync(banner.mobileImage)) {
+    if (banner?.mobileImage && fs.existsSync(banner.mobileImage)) {
       fs.unlinkSync(banner.mobileImage);
     }
 
-    await Banner.findByIdAndDelete(req.params.id);
+    // Remove banner from array
+    categoryDoc.banners.pull(bannerId);
+
+    await categoryDoc.save();
 
     res.json({ success: true });
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
