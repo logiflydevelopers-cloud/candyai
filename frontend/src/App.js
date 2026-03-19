@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import {
   BrowserRouter as Router,
@@ -156,7 +157,7 @@ function AppContent() {
 
   return (
     <>
-
+      <Toaster position="top-right" />
       <div className={authModal || showPersonalize ? "app-blur" : ""}>
         {!hideNavbarMobile && (
           <Navbar
@@ -169,6 +170,7 @@ function AppContent() {
         <Sidebar
           open={sidebarOpen}
           disableTransition={disableTransition}
+          setSidebarOpen={setSidebarOpen}
         />
       </div>
 

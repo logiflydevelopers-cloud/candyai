@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://candyai.onrender.com/api",
+  baseURL: "http://localhost:5000/api",
 });
 
 // Request interceptor (optional but recommended)
@@ -15,13 +15,18 @@ API.interceptors.request.use((config) => {
 
 // Response interceptor (AUTO LOGOUT IF 401)
 API.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
+  res => res,
+  err => {
+    if (err.response?.status === 401) {
       localStorage.removeItem("token");
-      window.location.href = "/login";
+
+      // 🔥 React friendly redirect
+      window.dispatchEvent(new Event("openLogin"));
+
+      // ❗ DO NOT hard redirect
+      // window.location.href = "/login";
     }
-    return Promise.reject(error);
+    return Promise.reject(err);
   }
 );
 

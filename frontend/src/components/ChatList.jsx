@@ -46,18 +46,14 @@ function ChatList({ conversations, navigate, active, refresh, mobileOpen, closeM
 
             navigate(`/chat/${resetId}`, { replace: true });
 
-            // optional but works perfectly
-            setTimeout(() => {
-                window.location.reload();
-            }, 200);
-
+            // ❌ reload remove
         } catch (err) {
             console.log(err);
         }
     };
 
     const filtered = conversations
-        .filter(chat => chat.characterId)
+        .filter(chat => chat?.characterId?._id)
         .filter(chat =>
             chat.characterId.name
                 ?.toLowerCase()
@@ -65,37 +61,34 @@ function ChatList({ conversations, navigate, active, refresh, mobileOpen, closeM
         );
 
     const confirmDelete = async () => {
-
         try {
-
             await API.delete(`/chat/delete/${deleteId}`);
 
             setDeleteModal(false);
 
+            const res = await API.get("/chat/list");
+            const chats = res.data || [];
+
             await refresh();
 
-            const remaining = conversations.filter(
-                chat => chat.characterId._id !== deleteId
-            );
-
-            if (remaining.length > 0) {
-
-                navigate(`/chat/${remaining[0].characterId._id}`, { replace: true });
-
-            } else {
-
-                navigate("/chat", { replace: true });
-
+            if (chats.length === 0) {
+                navigate("/", { replace: true });
+                return;
             }
 
+            // 🔥 find next chat
+            const currentIndex = chats.findIndex(
+                c => c.characterId._id === deleteId
+            );
+
+            let nextChat = chats[currentIndex + 1] || chats[currentIndex - 1] || chats[0];
+
+            navigate(`/chat/${nextChat.characterId._id}`, { replace: true });
+
         } catch (err) {
-
             console.log(err);
-
         }
-
     };
-
 
     return (
         <>
@@ -172,13 +165,16 @@ function ChatList({ conversations, navigate, active, refresh, mobileOpen, closeM
                                 key={chat._id}
                                 className={`chat-item ${active === char._id ? "active" : ""}`}
                                 onClick={() => {
+                                    if (active === char._id) return; // 🔥 prevent duplicate nav
+
                                     navigate(`/chat/${char._id}`);
+
                                     if (closeMobile) closeMobile();
                                 }}
                             >
 
                                 <img
-                                    src={`https://candyai.onrender.com/uploads/${char?.images?.[0] || ""}`}
+                                    src={`http://localhost:5000/uploads/${char?.images?.[0] || ""}`}
                                     alt=""
                                 />
 

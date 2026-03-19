@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import API from "../api/axios";
+import toast from "react-hot-toast";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FiChevronDown, FiSettings, FiLogOut } from "react-icons/fi";
+import { FaGem } from "react-icons/fa";
 import "./Sidebar.css";
 
 // ICONS
@@ -14,7 +17,7 @@ import MyAiIcon from "../image/My AI.svg";
 import PremiumIcon from "../image/Premium.svg";
 import LanguageIcon from "../image/Language.svg";
 
-function Sidebar({ open, disableTransition }) {
+function Sidebar({ open, disableTransition, setSidebarOpen }) {
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -104,7 +107,7 @@ function Sidebar({ open, disableTransition }) {
               className="sidebar-sub-item"
               onClick={() => navigate("/subscription")}
             >
-              Subscription
+              <FaGem /> Subscription
             </div>
 
             <div
@@ -143,7 +146,51 @@ function Sidebar({ open, disableTransition }) {
           <div
             key={index}
             className={`sidebar-item ${isActive ? "active" : ""}`}
-            onClick={() => navigate(item.path)}
+            onClick={() => {
+
+              if (item.name === "Chat") {
+
+                const token = localStorage.getItem("token");
+
+                if (!token) {
+                  window.dispatchEvent(new Event("openLogin"));
+                  return;
+                }
+
+                API.get("/chat/list")
+                  .then(res => {
+                    const chats = res.data || [];
+
+                    if (chats.length === 0) {
+                      toast.error("Please add a character to start chatting");
+                      return;
+                    }
+
+                    navigate(`/chat/${chats[0].characterId._id}`);
+
+                    // ✅ 🔥 ADD THIS
+                    setSidebarOpen(false);
+
+                  })
+                  .catch(() => {
+                    window.dispatchEvent(new Event("openLogin"));
+                  });
+
+                return;
+              }
+
+              navigate(item.path);
+
+              // 🔥 AUTO CLOSE / COLLAPSE SIDEBAR
+              if (window.innerWidth <= 768) {
+                // 📱 Mobile → completely close
+                setSidebarOpen(false);
+              } else {
+                // 💻 Desktop → collapse (optional)
+                setSidebarOpen(false);
+              }
+
+            }}
           >
             <img src={item.icon} alt="" className="sidebar-icon" />
             {open && <span className="text">{item.name}</span>}

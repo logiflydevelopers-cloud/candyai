@@ -72,6 +72,12 @@ const CharacterSchema = new mongoose.Schema({
     default: 0
   },
 
+  likedBy: [
+    {
+      type: String
+    }
+  ],
+
   chats: {
     type: Number,
     default: 0

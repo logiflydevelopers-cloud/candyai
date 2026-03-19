@@ -10,10 +10,12 @@
   border-bottom: 1px solid #363636;
 }
 
-.character-grid {
+.collection-character-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 25px;
+  margin-top: 20px;
+
 }
 
 .collection-character-card {
@@ -542,7 +544,7 @@
     grid-template-columns: 1fr;
   }
 
-  .character-grid {
+  .collection-character-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 2fr));
     gap: 25px;

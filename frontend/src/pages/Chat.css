@@ -143,13 +143,6 @@
     object-position: top;
 }
 
-
-.chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-}
-
 .details-wrapper {
     width: 340px;
     border-left: 1px solid #222;
@@ -222,17 +215,7 @@
 }
 
 
-@media (max-width:768px) {
 
-    .chat-layout {
-        margin-left: 0;
-    }
-
-    .chat-user {
-        gap: 8px;
-    }
-
-}
 
 
 .empty-chat {
@@ -565,30 +548,17 @@
 }
 
 .suggest-btn {
-
     padding: 7px 16px;
-
     border-radius: 26px;
-
     border: 1px solid #4f46e5;
-
-    background: rgba(30, 30, 40, 0.7);
-
+    background-image: linear-gradient(90deg, #6143e621 0%, #4346e64d 100%);
     color: #d9d9ff;
-
     font-size: 14px;
     font-weight: 500;
-
     cursor: pointer;
-
     backdrop-filter: blur(6px);
-
-    box-shadow:
-        0 0 0 1px rgba(99, 102, 241, .25),
-        inset 0 1px 0 rgba(255, 255, 255, .06);
-
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, .25), inset 0 1px 0 rgba(255, 255, 255, .06);
     transition: all .25s ease;
-
 }
 
 
@@ -628,6 +598,7 @@
 
 .menu-wrapper {
     position: relative;
+    display: flex;
 }
 
 .chat-menu {
@@ -646,6 +617,9 @@
     padding: 12px 16px;
     cursor: pointer;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .chat-menu-item:hover {
@@ -675,11 +649,6 @@
 
 /* MESSAGES */
 
-.chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-}
 
 .message {
     padding: 12px 16px;
@@ -1117,14 +1086,6 @@ svg.swiper-navigation-icon {
     }
 }
 
-.chat-messages {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 20px;
-    overflow-y: auto;
-}
-
 .message-wrapper {
     display: flex;
     flex-direction: column;
@@ -1245,9 +1206,9 @@ svg.swiper-navigation-icon {
 
 .message-bubble {
 
-    padding: 12px 16px;
+    padding: 15px 16px;
     border-radius: 16px;
-    font-size: 15px;
+    font-size: 13px;
     line-height: 1.5;
     word-break: break-word;
 
@@ -1473,27 +1434,15 @@ svg.swiper-navigation-icon {
 /* MAIN INPUT BAR */
 
 .chat-input-bar {
-
     display: flex;
     align-items: center;
-
     gap: 14px;
-
     padding: 14px 18px;
-
     border-radius: 40px;
-
-    background: linear-gradient(90deg,
-            rgba(30, 30, 30, .9),
-            rgba(20, 20, 20, .9));
-
+    background: linear-gradient(90deg, rgba(30, 30, 30, .9), rgba(20, 20, 20, .9));
     border: 1px solid #2a2a2a;
-
     backdrop-filter: blur(10px);
-
-    box-shadow:
-        0 8px 28px rgba(0, 0, 0, .45);
-
+    box-shadow: 0 8px 28px rgba(0, 0, 0, .45);
 }
 
 
@@ -1829,11 +1778,10 @@ svg.swiper-navigation-icon {
 
     color: white;
 
-    font-size: 14px;
+    font-size: 16px;
 
     resize: none;
 
-    line-height: 1.5;
 
     height: auto;
 
@@ -1949,8 +1897,8 @@ svg.swiper-navigation-icon {
     .mobile-profile-header {
         position: absolute;
         display: block;
-        top: 16px;
-        left: 16px;
+        top: 8px;
+        left: 8px;
         z-index: 50;
     }
 
@@ -1987,6 +1935,12 @@ svg.swiper-navigation-icon {
         padding: 0px 15px 10px 15px;
         background: #0b0b0b;
     }
+
+    .reset-modal {
+        width: 340px;
+        padding: 20px;
+    }
+
 }
 
 
@@ -2008,17 +1962,6 @@ svg.swiper-navigation-icon {
     .chat-actions {
         display: flex;
         opacity: 1;
-    }
-
-    .chat-sidebar {
-        position: fixed;
-        left: -100%;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background: #0b0b0b;
-        z-index: 100;
-        transition: 0.3s;
     }
 
     .chat-sidebar.mobile-open {
@@ -2046,10 +1989,6 @@ svg.swiper-navigation-icon {
         background: #0b0b0b;
         z-index: 100;
         transition: 0.3s;
-    }
-
-    .chat-sidebar.mobile-open {
-        left: 0;
     }
 
     /* CHAT MAIN FULL */
@@ -2082,8 +2021,7 @@ svg.swiper-navigation-icon {
         align-items: center;
         justify-content: center;
         font-size: 22px;
-        margin-right: 12px;
-        margin-left: 4px;
+        margin-right: 5px;
     }
 
 
@@ -2510,4 +2448,147 @@ svg.swiper-navigation-icon {
         transform: translateY(0);
     }
 
+}
+
+
+@media (max-width:768px) {
+
+    .message-wrapper {
+        max-width: 75%;
+    }
+
+    .chat-layout {
+        margin-left: 0;
+    }
+
+    .chat-user {
+        gap: 8px;
+    }
+
+    .message-bubble {
+
+        padding: 15px 15px;
+        border-radius: 16px;
+        font-size: 12px;
+        line-height: 1.5;
+        word-break: break-word;
+
+    }
+
+    .chat-messages {
+
+        flex: 1;
+        overflow-y: auto;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+
+    }
+
+
+}
+
+
+
+.media-loading.advanced {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+
+    background: linear-gradient(135deg, #121212, #0c0c0c);
+    border: 1px solid #262626;
+    border-radius: 16px;
+
+    box-shadow:
+        0 0 20px rgba(108, 76, 255, 0.15),
+        inset 0 0 10px rgba(108, 76, 255, 0.05);
+}
+
+.progress-circle {
+    --size: 54px;
+
+    width: var(--size);
+    height: var(--size);
+
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+
+    background:
+        conic-gradient(#6c4cff calc(var(--p) * 1%),
+            #2a2a2a 0);
+
+    position: relative;
+
+    transition: background 0.4s ease;
+}
+
+.progress-circle::before {
+    content: "";
+    position: absolute;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+    background: #0b0b0b;
+
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.6);
+}
+
+.progress-circle span {
+    position: relative;
+    z-index: 2;
+}
+
+.progress-bar {
+    width: 200px;
+    height: 6px;
+
+    background: #2a2a2a;
+    border-radius: 10px;
+
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 10px;
+
+    background: linear-gradient(90deg, #6c4cff, #9f7bff);
+
+    transition: width 0.4s ease;
+
+    box-shadow: 0 0 10px rgba(108, 76, 255, 0.5);
+
+    position: relative;
+}
+
+.progress-fill::after {
+    content: "";
+    position: absolute;
+
+    top: 0;
+    left: -40px;
+
+    width: 40px;
+    height: 100%;
+
+    background: rgba(255, 255, 255, 0.25);
+
+    animation: shimmerMove 1.2s infinite;
+}
+
+@keyframes shimmerMove {
+    100% {
+        transform: translateX(240px);
+    }
 }

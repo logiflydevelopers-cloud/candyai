@@ -233,17 +233,40 @@ exports.updateCharacter = async (req, res) => {
 
 
 // LIKE INCREMENT
-exports.incrementLikes = async (req, res) => {
+exports.toggleLike = async (req, res) => {
 
   try {
 
-    const character = await Character.findByIdAndUpdate(
-      req.params.id,
-      { $inc: { likes: 1 } },
-      { new: true }
-    );
+    const userId = req.user.id;
 
-    res.json(character);
+    const character = await Character.findById(req.params.id);
+
+    if (!character) {
+      return res.status(404).json({ error: "Character not found" });
+    }
+
+    const alreadyLiked = character.likedBy.includes(userId);
+
+    if (alreadyLiked) {
+
+      // DISLIKE
+      character.likedBy = character.likedBy.filter(id => id !== userId);
+      character.likes = Math.max(0, character.likes - 1);
+
+    } else {
+
+      // LIKE
+      character.likedBy.push(userId);
+      character.likes += 1;
+
+    }
+
+    await character.save();
+
+    res.json({
+      likes: character.likes,
+      liked: !alreadyLiked
+    });
 
   } catch (err) {
 

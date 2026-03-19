@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const upload = require("../middleware/upload");
+const authMiddleware = require("../middleware/auth");
 
 const {
     createCharacter,
@@ -10,7 +11,7 @@ const {
     updateCharacter,
     incrementChats,
     getCharacter,
-    incrementLikes
+    toggleLike // ✅ CHANGE
 } = require("../controllers/characterController");
 
 
@@ -27,16 +28,13 @@ router.post(
     createCharacter
 );
 
-
-// GET ALL CHARACTERS
+// GET ALL
 router.get("/", getCharacters);
 
-
-// GET SINGLE CHARACTER
+// GET SINGLE
 router.get("/:id", getCharacter);
 
-
-// UPDATE CHARACTER
+// UPDATE
 router.put(
     "/:id",
     upload.fields([
@@ -49,14 +47,13 @@ router.put(
     updateCharacter
 );
 
-
-// DELETE CHARACTER
+// DELETE
 router.delete("/:id", deleteCharacter);
 
-
-// INCREMENT CHAT COUNT
+// CHAT COUNT
 router.post("/:id/chat", incrementChats);
-router.put("/like/:id", incrementLikes);
 
+// ✅ LIKE TOGGLE
+router.put("/like/:id", authMiddleware, toggleLike);
 
 module.exports = router;

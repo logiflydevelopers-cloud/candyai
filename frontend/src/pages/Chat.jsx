@@ -1,10 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 
 import { FiPhone } from "react-icons/fi";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { IoArrowBack } from "react-icons/io5";
+import { HiOutlineRefresh } from "react-icons/hi";
+import { FiTrash2 } from "react-icons/fi";
 
 import API from "../api/axios";
 
@@ -27,65 +29,101 @@ function Chat({ sidebarOpen }) {
   const [profileOpen, setProfileOpen] = useState(window.innerWidth > 768);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileListOpen, setMobileListOpen] = useState(!characterId);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const loadChats = useCallback(async () => {
+  const loadChats = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
     try {
+      const res = await API.get("/chat/list");
+      setConversations(res.data || []);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleResetConfirm = async () => {
+    try {
+      await API.post(`/chat/reset/${characterId}`);
+
+      const msgRes = await API.get(`/chat/messages/${characterId}`);
+      setMessages(msgRes.data);
+
+      setShowResetConfirm(false);
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      await API.delete(`/chat/delete/${characterId}`);
 
       const res = await API.get("/chat/list");
       const chats = res.data || [];
 
       setConversations(chats);
 
-      if (!characterId && chats.length > 0) {
+      if (chats.length > 0) {
         navigate(`/chat/${chats[0].characterId._id}`, { replace: true });
+      } else {
+        navigate("/", { replace: true });
       }
 
-    } catch (err) {
-      console.log(err);
-    }
-
-  }, [characterId, navigate]);
-
-  const resetChat = async () => {
-
-    try {
-
-      await API.post(`/chat/reset/${characterId}`);
-
-      const msgRes = await API.get(`/chat/messages/${characterId}`);
-      setMessages(msgRes.data);
-
-      setMenuOpen(false);
+      setShowDeleteConfirm(false);
 
     } catch (err) {
       console.log(err);
     }
-
-  };
-
-  const deleteChat = async () => {
-
-    try {
-
-      await API.delete(`/chat/delete/${characterId}`);
-
-      setMessages([]);   // ⭐ important
-      setCharacter(null);
-
-      navigate("/chat", { replace: true });
-
-      loadChats();
-
-    } catch (err) {
-      console.log(err);
-    }
-
   };
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/", { replace: true });
+
+      setTimeout(() => {
+        window.dispatchEvent(new Event("openLogin"));
+      }, 200);
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     loadChats();
-  }, [loadChats]);
+  }, [characterId]);
+
+  useEffect(() => {
+    if (characterId && window.innerWidth <= 768) {
+      setMobileListOpen(false);
+    }
+  }, [characterId]);
+
+  useEffect(() => {
+    const init = async () => {
+
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      if (!characterId) {
+        try {
+          const res = await API.get("/chat/list");
+          const chats = res.data || [];
+
+          if (chats.length > 0) {
+            navigate(`/chat/${chats[0].characterId._id}`, { replace: true });
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    };
+
+    init();
+  }, [characterId, navigate]);
 
   useEffect(() => {
     setMessages([]);
@@ -102,16 +140,17 @@ function Chat({ sidebarOpen }) {
 
   useEffect(() => {
 
-    const loadChat = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
+    const loadChat = async () => {
       if (!characterId) return;
 
       setLoading(true);
 
       try {
-
         await API.get(`/chat/open/${characterId}`);
-        loadChats();
+        await loadChats();
 
         const [charRes, msgRes] = await Promise.all([
           API.get(`/characters/${characterId}`),
@@ -126,155 +165,240 @@ function Chat({ sidebarOpen }) {
       }
 
       setLoading(false);
-
     };
 
     loadChat();
 
-  }, [characterId, loadChats]);
+  }, [characterId]);
 
   return (
+    <>
+      <div className={`main-layout ${sidebarOpen ? "expanded" : "collapsed"}`}>
 
-    <div className={`main-layout ${sidebarOpen ? "expanded" : "collapsed"}`}>
+        <div className="chat-layout">
 
-      <div className="chat-layout">
+          {/* LEFT SIDEBAR */}
 
-        {/* LEFT SIDEBAR */}
+          <ChatList
+            conversations={conversations}
+            navigate={navigate}
+            active={characterId}
+            refresh={loadChats}
+            mobileOpen={mobileListOpen}
+            closeMobile={() => setMobileListOpen(false)}
+          />
 
-        <ChatList
-          conversations={conversations}
-          navigate={navigate}
-          active={characterId}
-          refresh={loadChats}
-          mobileOpen={mobileListOpen}
-          closeMobile={() => setMobileListOpen(false)}
-        />
+          {/* CHAT MAIN */}
 
-        {/* CHAT MAIN */}
+          <div className="chat-main">
 
-        <div className="chat-main">
+            {loading ? (
 
-          {loading ? (
+              <div className="empty-chat">
+                Loading chat...
+              </div>
 
-            <div className="empty-chat">
-              Loading chat...
-            </div>
+            ) : character && (
 
-          ) : character && (
+              <>
 
-            <>
+                {/* HEADER */}
 
-              {/* HEADER */}
+                <div className="chat-header">
 
-              <div className="chat-header">
+                  <div className="chat-user">
 
-                <div className="chat-user">
+                    {/* MOBILE BACK */}
+                    <IoArrowBack
+                      className="mobile-back"
+                      onClick={() => {
 
-                  {/* MOBILE BACK */}
-                  <IoArrowBack
-                    className="mobile-back"
-                    onClick={() => {
+                        setProfileOpen(false);
+                        setMobileListOpen(true);
 
-                      setProfileOpen(false);
-                      setMobileListOpen(true);
-
-                    }}
-                  />
-
-                  <img
-                    src={`https://candyai.onrender.com/uploads/${character.images[0]}`}
-                    alt={character.name || "avatar"}
-                    onClick={() => {
-
-                      if (window.innerWidth <= 768) {
-                        setProfileOpen(true);
-                        setMobileListOpen(false);
-                      } else {
-                        setProfileOpen(!profileOpen);
-                      }
-
-                    }}
-                  />
-
-                  <span>{character.name}</span>
-
-                </div>
-
-                <div className="chat-header-actions">
-
-                  <FiPhone />
-
-                  <div className="menu-wrapper">
-
-                    <HiOutlineDotsVertical
-                      onClick={() => setMenuOpen(!menuOpen)}
+                      }}
                     />
 
-                    {menuOpen && (
+                    <img
+                      src={`http://localhost:5000/uploads/${character.images[0]}`}
+                      alt={character.name || "avatar"}
+                      onClick={() => {
 
-                      <div className="chat-menu">
+                        if (window.innerWidth <= 768) {
+                          setProfileOpen(true);
+                          setMobileListOpen(false);
+                        } else {
+                          setProfileOpen(!profileOpen);
+                        }
 
-                        <div
-                          className="chat-menu-item"
-                          onClick={resetChat}
-                        >
-                          Reset chat
-                        </div>
+                      }}
+                    />
 
-                        <div
-                          className="chat-menu-item delete"
-                          onClick={deleteChat}
-                        >
-                          Delete chat
-                        </div>
-
-                      </div>
-
-                    )}
+                    <span>{character.name}</span>
 
                   </div>
 
-                  <HiOutlineMenuAlt2
-                    onClick={() => setProfileOpen(!profileOpen)}
-                  />
+                  <div className="chat-header-actions">
+
+                    <FiPhone />
+
+                    <div className="menu-wrapper">
+
+                      <HiOutlineDotsVertical
+                        onClick={() => setMenuOpen(!menuOpen)}
+                      />
+
+                      {menuOpen && (
+
+                        <div className="chat-menu">
+
+                          <div
+                            className="chat-menu-item"
+                            onClick={() => {
+                              setMenuOpen(false);
+                              setShowResetConfirm(true);
+                            }}
+                          >
+                            <HiOutlineRefresh />
+                            Reset chat
+                          </div>
+
+                          <div
+                            className="chat-menu-item delete"
+                            onClick={() => {
+                              setMenuOpen(false);
+                              setShowDeleteConfirm(true);
+                            }}
+                          >
+                            <FiTrash2 />
+                            Delete chat
+                          </div>
+
+                        </div>
+
+                      )}
+
+                    </div>
+
+                    <HiOutlineMenuAlt2
+                      onClick={() => setProfileOpen(!profileOpen)}
+                    />
+
+                  </div>
 
                 </div>
 
-              </div>
+                {/* BODY */}
 
-              {/* BODY */}
+                <div className="chat-body">
 
-              <div className="chat-body">
+                  <div className="chat-left">
 
-                <div className="chat-left">
+                    <ChatMessages
+                      messages={messages}
+                      character={character}
+                      setMessages={setMessages}
+                    />
 
-                  <ChatMessages
-                    messages={messages}
-                    character={character}
-                    setMessages={setMessages}
-                  />
+                  </div>
+
+                  <div className={`chat-details ${profileOpen ? "open" : ""}`}>
+                    <ChatProfile
+                      character={character}
+                      onBack={() => setProfileOpen(false)}
+                    />
+                  </div>
 
                 </div>
 
-                <div className={`chat-details ${profileOpen ? "open" : ""}`}>
-                  <ChatProfile
-                    character={character}
-                    onBack={() => setProfileOpen(false)}
-                  />
-                </div>
+              </>
 
-              </div>
+            )}
 
-            </>
-
-          )}
+          </div>
 
         </div>
 
       </div>
+      {
+        showResetConfirm && (
+          <div className="reset-overlay">
+            <div className="reset-modal">
 
-    </div>
+              <button
+                className="reset-close"
+                onClick={() => setShowResetConfirm(false)}
+              >
+                ✕
+              </button>
 
+              <h2>Reset chat?</h2>
+
+              <p>
+                This will start a new conversation. Your current chat history will be cleared.
+              </p>
+
+              <div className="reset-actions">
+                <button
+                  className="reset-cancel"
+                  onClick={() => setShowResetConfirm(false)}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  className="reset-confirm"
+                  onClick={handleResetConfirm}
+                >
+                  Yes, Reset
+                </button>
+              </div>
+
+            </div>
+          </div>
+        )
+      }
+
+      {
+        showDeleteConfirm && (
+          <div className="reset-overlay">
+            <div className="reset-modal">
+
+              <button
+                className="reset-close"
+                onClick={() => setShowDeleteConfirm(false)}
+              >
+                ✕
+              </button>
+
+              <h2>Delete chat?</h2>
+
+              <p>
+                Are you sure you want to delete this chat? All messages will be lost.
+              </p>
+
+              <div className="reset-actions">
+                <button
+                  className="reset-cancel"
+                  onClick={() => setShowDeleteConfirm(false)}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  className="reset-confirm"
+                  onClick={handleDeleteConfirm}
+                >
+                  Delete
+                </button>
+              </div>
+
+            </div>
+          </div>
+        )
+      }
+
+    </>
   );
 
 }

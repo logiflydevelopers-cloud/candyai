@@ -20,7 +20,7 @@
   z-index: 10000;
 }
 
-.close-btn {
+.login-close-btn {
   position: absolute;
   top: 15px;
   right: 20px;
@@ -28,6 +28,8 @@
   font-size: 18px;
   color: white;
 }
+
+
 
 /* LEFT IMAGE */
 .auth-left {

@@ -415,120 +415,6 @@
   color: white;
 }
 
-@media(max-width:768px) {
-
-  .character-filter-wrapper {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .search-wrapper {
-    width: 100%;
-  }
-
-  .slider-arrow {
-    display: none;
-  }
-
-  .character-categories {
-    overflow-x: auto;
-  }
-
-}
-
-
-@media(max-width:768px) {
-
-  .character-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .character-section {
-    margin-top: 10px;
-  }
-
-  .card-age {
-    font-size: 12px;
-    opacity: .9;
-  }
-
-  .character-filter {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
-  }
-
-  .search-wrapper {
-    width: 100%;
-  }
-
-  .search-wrapper.active {
-    width: 100% !important;
-  }
-
-  .character-categories {
-    overflow-x: auto;
-    padding-bottom: 8px;
-  }
-
-  .character-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-  }
-
-  .character-card {
-    height: 320px;
-  }
-
-  .stat {
-    font-size: 12px;
-  }
-
-  .icon {
-    font-size: 12px;
-  }
-
-  .card-stats {
-    gap: 7px;
-  }
-
-  .card-stats span {
-    gap: 4px;
-  }
-
-  .card-location {
-    gap: 4px;
-    font-size: 12px;
-    margin-bottom: 5px;
-    margin-left: -2px;
-  }
-
-  .card-header {
-    gap: 7px;
-    margin-bottom: 5px;
-  }
-
-  .card-name {
-    font-size: 20px;
-  }
-
-  .online-badge {
-    gap: 2px;
-    padding: 3px 5px;
-    font-size: 9px;
-  }
-
-  .online-badge .dot {
-    width: 5px;
-    height: 5px;
-    background: #5cff7a;
-    border-radius: 50%;
-    margin: 0 2px;
-  }
-}
 
 
 /* CARD FADE IN */
@@ -734,4 +620,133 @@
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+}
+
+
+
+
+@media(max-width:768px) {
+
+  .character-filter-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-wrapper {
+    width: 100%;
+  }
+
+  .slider-arrow {
+    display: none;
+  }
+
+  .character-categories {
+    overflow-x: auto;
+  }
+
+  .card-info {
+    padding: 10px;
+  }
+
+  .character-label {
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+
+}
+
+
+@media(max-width:768px) {
+
+  .character-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 15px;
+  }
+
+  .character-section {
+    margin-top: 10px;
+  }
+
+  .card-age {
+    font-size: 10px;
+    opacity: .9;
+  }
+
+  .character-filter {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .search-wrapper {
+    width: 100%;
+  }
+
+  .search-wrapper.active {
+    width: 100% !important;
+  }
+
+  .character-categories {
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .character-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .character-card {
+    height: 320px;
+  }
+
+  .stat {
+    font-size: 10px;
+  }
+
+  .icon {
+    font-size: 10px;
+  }
+
+  .card-stats {
+    gap: 7px;
+  }
+
+  .card-stats span {
+    gap: 3px;
+  }
+
+  .card-location {
+    gap: 3px;
+    font-size: 12px;
+    margin-bottom: 5px;
+    margin-left: -2px;
+  }
+
+  .card-header {
+    gap: 7px;
+    margin-bottom: 5px;
+  }
+
+  .card-name {
+    font-size: 17px;
+  }
+
+  .online-badge {
+    gap: 2px;
+    padding: 3px 5px;
+    font-size: 9px;
+  }
+
+  .online-badge .dot {
+    width: 5px;
+    height: 5px;
+    background: #5cff7a;
+    border-radius: 50%;
+    margin: 0 2px;
+  }
 }

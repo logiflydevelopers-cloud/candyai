@@ -44,33 +44,34 @@ function ChatMessages({ character, messages, setMessages }) {
 
     const startLoading = (type, callback) => {
 
-        setMediaType(type)
-        setGenerating(true)
-        setProgress(0)
+        setMediaType(type);
+        setGenerating(true);
+        setProgress(0);
 
-        let count = 0
+        let count = 0;
 
         const interval = setInterval(() => {
 
-            count += 10
-            setProgress(count)
+            count += Math.floor(Math.random() * 12) + 5; // 🔥 random smooth jump
 
-            if (count >= 100) {
+            if (count >= 100) count = 100;
 
-                clearInterval(interval)
+            setProgress(count);
+
+            if (count === 100) {
+
+                clearInterval(interval);
 
                 setTimeout(() => {
-
-                    setGenerating(false)
-                    callback()
-
-                }, 300)
+                    setGenerating(false);
+                    callback();
+                }, 400);
 
             }
 
-        }, 500)
+        }, 500);
 
-    }
+    };
 
     const sendImage = async () => {
 
@@ -131,7 +132,7 @@ function ChatMessages({ character, messages, setMessages }) {
     const sendNaughtyVideo = async () => {
 
         localStorage.setItem(`naughty_${character._id}`, "true");
-         setSuggestion(null);
+        setSuggestion(null);
 
         const userMessage = {
             sender: "user",
@@ -292,7 +293,7 @@ function ChatMessages({ character, messages, setMessages }) {
                             <div className="image-message">
 
                                 <img
-                                    src={`https://candyai.onrender.com/uploads/${msg.media}`}
+                                    src={`http://localhost:5000/uploads/${msg.media}`}
                                     className="chat-image"
                                     alt="chat media"
                                 />
@@ -317,7 +318,7 @@ function ChatMessages({ character, messages, setMessages }) {
                                     onContextMenu={(e) => e.preventDefault()}
                                     className="chat-video"
                                 >
-                                    <source src={`https://candyai.onrender.com/uploads/${msg.media}`} />
+                                    <source src={`http://localhost:5000/uploads/${msg.media}`} />
                                 </video>
 
                                 <div className={`message-bubble ${msg.sender}`}>
@@ -339,7 +340,7 @@ function ChatMessages({ character, messages, setMessages }) {
 
                                     <video
                                         className="locked-video-preview"
-                                        src={`https://candyai.onrender.com/uploads/${msg.media}`}
+                                        src={`http://localhost:5000/uploads/${msg.media}`}
                                         aria-label="locked video preview"
                                     />
 
@@ -396,18 +397,33 @@ function ChatMessages({ character, messages, setMessages }) {
 
                     <div className="message-wrapper bot">
 
-                        <div className="message-bubble bot media-loading">
+                        <div className="message-bubble bot media-loading advanced">
 
-                            <div className="media-avatar"></div>
+                            {/* 🔵 LEFT CIRCLE */}
+                            <div
+                                className="progress-circle"
+                                style={{ "--p": progress }}
+                            >
+                                <span>{progress}%</span>
+                            </div>
 
-                            <div>
+                            {/* 🧠 RIGHT SIDE */}
+                            <div className="media-content">
 
                                 <div className="media-title">
                                     {character.name} is sending a {mediaType}
                                 </div>
 
-                                <div className="media-progress">
-                                    {progress}% • This might take a few minutes
+                                {/* 📊 BAR */}
+                                <div className="progress-bar">
+                                    <div
+                                        className="progress-fill"
+                                        style={{ width: `${progress}%` }}
+                                    ></div>
+                                </div>
+
+                                <div className="media-sub">
+                                    This might take a few minutes
                                 </div>
 
                             </div>
@@ -497,7 +513,7 @@ function ChatMessages({ character, messages, setMessages }) {
                     <textarea
                         ref={textareaRef}
                         value={text}
-                        placeholder="Show me the scene..."
+                        placeholder="Write a message..."
                         className="chat-textarea"
                         rows={1}
                         onChange={handleInput}

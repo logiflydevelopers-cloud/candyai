@@ -273,7 +273,7 @@ function CharacterCard({ mainCategory }) {
           characters.map((character) => {
 
             const video = character?.video
-              ? `https://candyai.onrender.com/uploads/${character.video}`
+              ? `http://localhost:5000/uploads/${character.video}`
               : "";
 
             return (

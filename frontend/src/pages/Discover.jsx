@@ -31,9 +31,30 @@ function Discover() {
 
             setCharacters(discoverCharacters);
 
+            // ✅ SAFE CHECK
+            let userId = null;
+
+            if (token) {
+                try {
+                    userId = JSON.parse(atob(token.split(".")[1])).id;
+                } catch (e) {
+                    console.log("Token decode error");
+                }
+            }
+
+            const likedMap = {};
+
+            discoverCharacters.forEach(c => {
+                likedMap[c._id] = userId
+                    ? c.likedBy?.includes(userId)
+                    : false;
+            });
+
+            setLikedCharacters(likedMap);
+
         });
 
-    }, []);
+    }, [token]); // ✅ FIXED
 
     /* AUTO PLAY VIDEO ON SCROLL */
 
@@ -76,7 +97,7 @@ function Discover() {
         const container = containerRef.current;
 
         const index = Math.round(
-            container.scrollTop / window.innerHeight
+            container.scrollTop / container.clientHeight
         );
 
         if (index >= 5) {
@@ -133,7 +154,7 @@ function Discover() {
 
             setLikedCharacters((prev) => ({
                 ...prev,
-                [id]: true
+                [id]: res.data.liked
             }));
 
         } catch (err) {
@@ -169,7 +190,7 @@ function Discover() {
                         {/* VIDEO */}
                         <video
                             ref={(el) => (videoRefs.current[index] = el)}
-                            src={`https://candyai.onrender.com/uploads/${char.video}`}
+                            src={`http://localhost:5000/uploads/${char.video}`}
                             className="reel-video"
                             loop
                             muted
@@ -213,7 +234,7 @@ function Discover() {
                         <div className="reel-info">
 
                             <img
-                                src={`https://candyai.onrender.com/uploads/${char.images?.[0]}`}
+                                src={`http://localhost:5000/uploads/${char.images?.[0]}`}
                                 className="reel-avatar"
                                 alt=""
                             />

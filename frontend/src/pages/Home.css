@@ -63,7 +63,7 @@
     .main-layout.collapsed {
         margin-left: 0 !important;
         width: 100% !important;
-        padding: 50px 0px 0px;
+        padding: 0px 0px 0px;
     }
 
     .section-title {
@@ -76,7 +76,7 @@
     }
 
     .banner-section {
-        padding: 0;
+        padding: 50px 0 0 0;
     }
 }
 

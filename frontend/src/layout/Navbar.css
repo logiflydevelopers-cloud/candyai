@@ -213,7 +213,7 @@
   top: 35px;
   left: 0;
   background: #1a1a1a;
-  padding: 15px;  
+  padding: 15px;
   border-radius: 14px;
   display: flex;
   flex-direction: column;
@@ -237,6 +237,8 @@
   text-decoration: none;
   color: #aaa;
   position: relative;
+  display: flex;
+  gap: 7px;
 }
 
 .mobile-category-dropdown a.active {

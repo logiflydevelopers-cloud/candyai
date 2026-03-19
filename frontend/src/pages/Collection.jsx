@@ -59,7 +59,7 @@ function Collection({ sidebarOpen }) {
 
         <h2 className="collection-title">My Collection</h2>
 
-        <div className="character-grid">
+        <div className="collection-character-grid">
 
           {loading
             ? Array.from({ length: 6 }).map((_, i) => (
@@ -99,7 +99,7 @@ function Collection({ sidebarOpen }) {
                     <img
                       src={
                         item.character.images?.[0]
-                          ? `https://candyai.onrender.com/uploads/${item.character.images[0]}`
+                          ? `http://localhost:5000/uploads/${item.character.images[0]}`
                           : "/placeholder.jpg"
                       }
                       className="character-avatar"
@@ -133,7 +133,7 @@ function Collection({ sidebarOpen }) {
                       preview?.startsWith("http")
                         ? preview
                         : preview
-                          ? `https://candyai.onrender.com/uploads/${preview}`
+                          ? `http://localhost:5000/uploads/${preview}`
                           : "/placeholder.jpg"
                     }
                     className="character-preview"

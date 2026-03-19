@@ -50,14 +50,14 @@ function Register({ close, openLogin }) {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "https://candyai.onrender.com/api/auth/google";
+    window.location.href = "http://localhost:5000/api/auth/google";
   };
 
   return (
     <div className="auth-overlay">
       <div className="auth-modal">
 
-        <div className="close-btn" onClick={close}>✕</div>
+        <div className="login-close-btn" onClick={close}>✕</div>
 
         <div className="auth-left">
           <img src={loginImage} alt="register" />
