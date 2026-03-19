@@ -173,7 +173,7 @@ function Chat({ sidebarOpen }) {
 
   return (
     <>
-      <div className={`main-layout ${sidebarOpen ? "expanded" : "collapsed"}`}>
+      <div className={`main-layout chat-page ${sidebarOpen ? "expanded" : "collapsed"}`}>
 
         <div className="chat-layout">
 
