@@ -174,7 +174,7 @@ function ChatList({ conversations, navigate, active, refresh, mobileOpen, closeM
                             >
 
                                 <img
-                                    src={`http://localhost:5000/uploads/${char?.images?.[0] || ""}`}
+                                    src={`https://candyai.onrender.com/uploads/${char?.images?.[0] || ""}`}
                                     alt=""
                                 />
 

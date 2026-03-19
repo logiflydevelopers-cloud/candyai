@@ -220,7 +220,7 @@ function Chat({ sidebarOpen }) {
                     />
 
                     <img
-                      src={`http://localhost:5000/uploads/${character.images[0]}`}
+                      src={`https://candyai.onrender.com/uploads/${character.images[0]}`}
                       alt={character.name || "avatar"}
                       onClick={() => {
 
