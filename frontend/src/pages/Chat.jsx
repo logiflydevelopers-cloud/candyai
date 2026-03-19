@@ -28,7 +28,12 @@ function Chat({ sidebarOpen }) {
 
   const [profileOpen, setProfileOpen] = useState(window.innerWidth > 768);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobileListOpen, setMobileListOpen] = useState(!characterId);
+  const [mobileListOpen, setMobileListOpen] = useState(() => {
+    if (window.innerWidth <= 768) {
+      return !window.location.pathname.includes("/chat/");
+    }
+    return false;
+  });
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -97,8 +102,8 @@ function Chat({ sidebarOpen }) {
   }, [characterId]);
 
   useEffect(() => {
-    if (characterId && window.innerWidth <= 768) {
-      setMobileListOpen(false);
+    if (window.innerWidth <= 768) {
+      setMobileListOpen(!characterId);
     }
   }, [characterId]);
 
