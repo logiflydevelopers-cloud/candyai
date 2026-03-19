@@ -51,11 +51,15 @@
 /* VIEW */
 .ig-view {
   width: 380px;
-  height: 90vh;
+  height: 100dvh;
+  /* 🔥 FIX */
   aspect-ratio: 9/16;
   position: relative;
   overflow: hidden;
   border-radius: 15px;
+
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* MEDIA */
@@ -68,7 +72,7 @@
 /* PROGRESS */
 .ig-progress {
   position: absolute;
-  top: 10px;
+  top: calc(10px + env(safe-area-inset-top));
   width: 95%;
   left: 50%;
   transform: translateX(-50%);
@@ -91,7 +95,7 @@
 /* HEADER */
 .ig-top {
   position: absolute;
-  top: 25px;
+  top: calc(25px + env(safe-area-inset-top));
   left: 15px;
   display: flex;
   gap: 10px;
@@ -116,7 +120,7 @@
 /* CLOSE */
 .ig-close {
   position: absolute;
-  top: 20px;
+  top: calc(20px + env(safe-area-inset-top));
   right: 15px;
   background: none;
   border: none;
@@ -126,6 +130,10 @@
   height: 35px;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.ig-modal {
+  height: 100dvh;
 }
 
 .ig-user-info {
@@ -214,7 +222,8 @@
 
   .ig-view {
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     border-radius: 0px;
   }
+
 }

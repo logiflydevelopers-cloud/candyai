@@ -165,11 +165,17 @@ function ChatList({ conversations, navigate, active, refresh, mobileOpen, closeM
                                 key={chat._id}
                                 className={`chat-item ${active === char._id ? "active" : ""}`}
                                 onClick={() => {
-                                    if (active === char._id) return; // 🔥 prevent duplicate nav
 
-                                    navigate(`/chat/${char._id}`);
-
+                                    // ✅ always close mobile list
                                     if (closeMobile) closeMobile();
+
+                                    // ✅ if same chat → just re-open UI (no navigation needed)
+                                    if (active === char._id) {
+                                        return;
+                                    }
+
+                                    // ✅ navigate if different chat
+                                    navigate(`/chat/${char._id}`);
                                 }}
                             >
 
