@@ -2613,39 +2613,3 @@ svg.swiper-navigation-icon {
         transform: translateX(240px);
     }
 }
-
-
-.chat-page .chat-header {
-    flex-shrink: 0;
-}
-
-.chat-page .chat-body {
-    flex: 1;
-    display: flex;
-    overflow: hidden;
-}
-
-.chat-page .chat-left {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-
-.chat-page .chat-box {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.chat-page .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-}
-
-.chat-page .chat-input-wrapper {
-    flex-shrink: 0;
-}
