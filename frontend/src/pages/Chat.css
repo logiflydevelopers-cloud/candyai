@@ -1,23 +1,4 @@
 /* GLOBAL SMOOTH UI */
-
-html,
-body,
-#root {
-    height: 100%;
-    overflow: hidden;
-}
-
-.chat-page,
-.chat-layout,
-.chat-main,
-.chat-body,
-.chat-left,
-.chat-box {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
 .chat-layout,
 .chat-main,
 .chat-body,
@@ -43,14 +24,11 @@ body,
     display: flex;
     background: #0b0b0b;
     color: white;
-    height: 100vh;
-    overflow: hidden;
-    /* 🔥 important */
 }
 
 .chat-layout {
     display: flex;
-    height: 100dvh;
+    height: calc(100vh - 70px);
     background: #0b0b0b;
     color: white;
     overflow: hidden;
@@ -391,6 +369,12 @@ body,
 }
 
 
+.chat-body {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
 .chat-left {
     flex: 1;
     display: flex;
@@ -650,6 +634,7 @@ body,
 
 .chat-body {
     flex: 1;
+    display: flex;
     overflow: hidden;
 }
 
@@ -737,24 +722,11 @@ body,
 /* EMPTY */
 
 .empty-chat {
-    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
-    width: 100%;
-    text-align: center;
-    color: #aaa;
-    font-size: 16px;
-}
-
-.chat-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    /* 🔥 important */
-    overflow: hidden;
+    color: #777;
 }
 
 .mobile-back {
@@ -1195,7 +1167,6 @@ svg.swiper-navigation-icon {
 
     flex: 1;
     overflow-y: auto;
-    overscroll-behavior: contain;
     padding: 24px;
     display: flex;
     flex-direction: column;
@@ -2494,11 +2465,6 @@ svg.swiper-navigation-icon {
 
     .chat-layout {
         margin-left: 0;
-    }
-
-    .chat-layout {
-        height: 100dvh;
-        overflow: hidden;
     }
 
     .chat-user {
