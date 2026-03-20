@@ -125,7 +125,7 @@ function Chat({ sidebarOpen }) {
         }
       });
     }
-  }, [characterId]);
+  }, [characterId, navigate]);
 
   useEffect(() => {
     setMessages([]);
