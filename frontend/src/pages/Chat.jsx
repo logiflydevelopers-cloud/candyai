@@ -28,24 +28,24 @@ function Chat({ sidebarOpen }) {
 
   const [profileOpen, setProfileOpen] = useState(window.innerWidth > 768);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobileListOpen, setMobileListOpen] = useState(() => {
-    if (window.innerWidth <= 768) {
-      return !window.location.pathname.includes("/chat/");
-    }
-    return false;
-  });
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [mobileListOpen, setMobileListOpen] = useState(() => {
+    return window.innerWidth <= 768; // mobile → open list by default
+  });
 
   const loadChats = async () => {
     const token = localStorage.getItem("token");
-    if (!token) return;
+    if (!token) return [];
 
     try {
       const res = await API.get("/chat/list");
-      setConversations(res.data || []);
+      const chats = res.data || [];
+      setConversations(chats);
+      return chats; // ✅ IMPORTANT
     } catch (err) {
       console.log(err);
+      return [];
     }
   };
 
@@ -103,32 +103,29 @@ function Chat({ sidebarOpen }) {
 
   useEffect(() => {
     if (window.innerWidth <= 768) {
-      setMobileListOpen(!characterId);
+      if (characterId) {
+        setMobileListOpen(false); // open chat
+      } else {
+        setMobileListOpen(true); // show list
+      }
     }
   }, [characterId]);
 
   useEffect(() => {
-    const init = async () => {
+    if (window.innerWidth <= 768) {
+      // mobile → stay on /chat
+      return;
+    }
 
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      if (!characterId) {
-        try {
-          const res = await API.get("/chat/list");
-          const chats = res.data || [];
-
-          if (chats.length > 0) {
-            navigate(`/chat/${chats[0].characterId._id}`, { replace: true });
-          }
-        } catch (err) {
-          console.log(err);
+    // desktop → auto open first chat
+    if (!characterId) {
+      loadChats().then((chats) => {
+        if (chats?.length > 0) {
+          navigate(`/chat/${chats[0].characterId._id}`, { replace: true });
         }
-      }
-    };
-
-    init();
-  }, [characterId, navigate]);
+      });
+    }
+  }, [characterId]);
 
   useEffect(() => {
     setMessages([]);
@@ -198,11 +195,11 @@ function Chat({ sidebarOpen }) {
           <div className="chat-main">
 
             {loading ? (
-
-              <div className="empty-chat">
-                Loading chat...
+              <div className="loading-wrapper">
+                <div className="empty-chat">
+                  Loading chat...
+                </div>
               </div>
-
             ) : character && (
 
               <>
@@ -217,15 +214,16 @@ function Chat({ sidebarOpen }) {
                     <IoArrowBack
                       className="mobile-back"
                       onClick={() => {
-
                         setProfileOpen(false);
                         setMobileListOpen(true);
 
+                        // 🔥 important → remove id from URL
+                        navigate("/chat", { replace: true });
                       }}
                     />
 
                     <img
-                      src={`https://candyai.onrender.com/uploads/${character.images[0]}`}
+                      src={`http://localhost:5000/uploads/${character.images[0]}`}
                       alt={character.name || "avatar"}
                       onClick={() => {
 

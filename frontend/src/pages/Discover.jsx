@@ -69,9 +69,15 @@ function Discover() {
                     const video = entry.target;
 
                     if (entry.isIntersecting) {
-                        video.play().catch(() => { });
+                        const playPromise = video.play();
+
+                        if (playPromise !== undefined) {
+                            playPromise.catch(() => { });
+                        }
                     } else {
-                        video.pause();
+                        if (!video.paused) {
+                            video.pause();
+                        }
                     }
 
                 });
@@ -190,7 +196,7 @@ function Discover() {
                         {/* VIDEO */}
                         <video
                             ref={(el) => (videoRefs.current[index] = el)}
-                            src={`https://candyai.onrender.com/uploads/${char.video}`}
+                            src={`http://localhost:5000/uploads/${char.video}`}
                             className="reel-video"
                             loop
                             muted
@@ -234,7 +240,7 @@ function Discover() {
                         <div className="reel-info">
 
                             <img
-                                src={`https://candyai.onrender.com/uploads/${char.images?.[0]}`}
+                                src={`http://localhost:5000/uploads/${char.images?.[0]}`}
                                 className="reel-avatar"
                                 alt=""
                             />

@@ -52,9 +52,15 @@ function ChatProfile({ character, onBack }) {
             const slide = media[swiper.activeIndex];
 
             if (slide?.type === "video") {
-              videoRef.current?.play();
+              const playPromise = videoRef.current?.play();
+
+              if (playPromise !== undefined) {
+                playPromise.catch(() => { });
+              }
             } else {
-              videoRef.current?.pause();
+              if (!videoRef.current?.paused) {
+                videoRef.current?.pause();
+              }
             }
 
           }}
@@ -67,7 +73,7 @@ function ChatProfile({ character, onBack }) {
 
               {item.type === "image" && (
                 <img
-                  src={`https://candyai.onrender.com/uploads/${item.src}`}
+                  src={`http://localhost:5000/uploads/${item.src}`}
                   className="profile-media-img"
                   alt={`${character.name} media`}
                 />
@@ -82,7 +88,7 @@ function ChatProfile({ character, onBack }) {
                   loop
                   preload="metadata"
                   className="profile-media-img"
-                  src={`https://candyai.onrender.com/uploads/${item.src}`}
+                  src={`http://localhost:5000/uploads/${item.src}`}
                 />
               )}
 

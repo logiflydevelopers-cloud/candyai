@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import API from "../api/axios";
 import "./Stories.css";
 
-const BASE_URL = "https://candyai.onrender.com/uploads/";
+const BASE_URL = "http://localhost:5000/uploads/";
 
 function Stories({ category }) {
   const [stories, setStories] = useState([]);
@@ -164,6 +164,19 @@ function Stories({ category }) {
     return () => clearTimer();
   }, [activeUser, activeIndex, stories, nextStory, clearTimer]);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+
+    const playPromise = video.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch(() => { });
+    }
+  }, [activeUser, activeIndex]);
+
   /* ================= VIDEO PROGRESS ================= */
   useEffect(() => {
     const video = videoRef.current;
@@ -289,6 +302,7 @@ function Stories({ category }) {
                 }
                 autoPlay
                 playsInline
+                muted
               />
             )}
 

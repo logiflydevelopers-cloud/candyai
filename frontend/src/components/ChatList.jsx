@@ -165,22 +165,20 @@ function ChatList({ conversations, navigate, active, refresh, mobileOpen, closeM
                                 key={chat._id}
                                 className={`chat-item ${active === char._id ? "active" : ""}`}
                                 onClick={() => {
+                                    if (active === char._id) return;
 
-                                    // ✅ always close mobile list
-                                    if (closeMobile) closeMobile();
-
-                                    // ✅ if same chat → just re-open UI (no navigation needed)
-                                    if (active === char._id) {
-                                        return;
-                                    }
-
-                                    // ✅ navigate if different chat
+                                    // navigate FIRST
                                     navigate(`/chat/${char._id}`);
+
+                                    // THEN close sidebar (small delay = smooth UX)
+                                    setTimeout(() => {
+                                        if (closeMobile) closeMobile();
+                                    }, 100);
                                 }}
                             >
 
                                 <img
-                                    src={`https://candyai.onrender.com/uploads/${char?.images?.[0] || ""}`}
+                                    src={`http://localhost:5000/uploads/${char?.images?.[0] || ""}`}
                                     alt=""
                                 />
 
