@@ -89,7 +89,7 @@ function CharacterCollection({ sidebarOpen }) {
                                 <span className="arrow">›</span>
 
                                 <img
-                                    src={`http://localhost:5000/uploads/${character.images?.[0]}`}
+                                    src={`https://candyai.onrender.com/uploads/${character.images?.[0]}`}
                                     className="header-avatar"
                                     alt=""
                                 />
@@ -120,7 +120,7 @@ function CharacterCollection({ sidebarOpen }) {
                             {item.type === "image" ? (
 
                                 <img
-                                    src={`http://localhost:5000/uploads/${item.media}`}
+                                    src={`https://candyai.onrender.com/uploads/${item.media}`}
                                     className="media-thumb"
                                     alt=""
                                 />
@@ -128,7 +128,7 @@ function CharacterCollection({ sidebarOpen }) {
                             ) : (
 
                                 <video
-                                    src={`http://localhost:5000/uploads/${item.media}`}
+                                    src={`https://candyai.onrender.com/uploads/${item.media}`}
                                     className="media-thumb"
                                 />
 
@@ -185,7 +185,7 @@ function CharacterCollection({ sidebarOpen }) {
                             {preview.type === "image" ? (
 
                                 <img
-                                    src={`http://localhost:5000/uploads/${preview.media}`}
+                                    src={`https://candyai.onrender.com/uploads/${preview.media}`}
                                     className="preview-media"
                                     alt=""
                                 />
@@ -193,7 +193,7 @@ function CharacterCollection({ sidebarOpen }) {
                             ) : (
 
                                 <video
-                                    src={`http://localhost:5000/uploads/${preview.media}`}
+                                    src={`https://candyai.onrender.com/uploads/${preview.media}`}
                                     controlsList="nodownload"
                                     disablePictureInPicture
                                     controls

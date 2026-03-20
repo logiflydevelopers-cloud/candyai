@@ -73,7 +73,7 @@ function ChatProfile({ character, onBack }) {
 
               {item.type === "image" && (
                 <img
-                  src={`http://localhost:5000/uploads/${item.src}`}
+                  src={`https://candyai.onrender.com/uploads/${item.src}`}
                   className="profile-media-img"
                   alt={`${character.name} media`}
                 />
@@ -88,7 +88,7 @@ function ChatProfile({ character, onBack }) {
                   loop
                   preload="metadata"
                   className="profile-media-img"
-                  src={`http://localhost:5000/uploads/${item.src}`}
+                  src={`https://candyai.onrender.com/uploads/${item.src}`}
                 />
               )}
 

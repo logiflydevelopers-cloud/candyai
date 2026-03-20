@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://candyai.onrender.com/api",
 });
 
 // Request interceptor (optional but recommended)
