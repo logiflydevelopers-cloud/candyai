@@ -29,6 +29,10 @@ function Login({ openRegister, close, openForgot }) {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
+      localStorage.removeItem("userPlan"); 
+
+      window.dispatchEvent(new Event("planUpdated"));
+
       close();
 
       // 🔥 Check if profile incomplete

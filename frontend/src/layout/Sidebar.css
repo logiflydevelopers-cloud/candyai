@@ -378,6 +378,13 @@
   transition: all 0.25s ease;
 }
 
+.premium-inner {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
 
 .premium-btn-sidebar.active-premium {
   box-shadow: 0 0 20px rgba(255, 200, 0, 0.6);
@@ -393,4 +400,3 @@
     overflow-y: auto;
   }
 }
-

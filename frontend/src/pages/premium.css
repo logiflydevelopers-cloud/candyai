@@ -1,0 +1,143 @@
+.premium-main {
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #141414, #0d0d0d);
+    color: white;
+}
+
+/* GRID */
+.premium-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: 30px;
+    padding: 40px;
+    transition: 0.3s;
+    margin-top: 60px;
+}
+
+.premium-grid.expanded {
+    margin-left: 240px;
+}
+
+.premium-grid.collapsed {
+    margin-left: 80px;
+}
+
+/* LEFT */
+.sale-title {
+    font-size: 36px;
+}
+
+.sale-title span {
+    color: #7cff7c;
+}
+
+.sale-sub {
+    margin-top: 10px;
+    color: #aaa;
+}
+
+.sale-sub span {
+    color: #ff4d6d;
+}
+
+.premium-img-left {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* CENTER */
+.plan-card {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    position: relative;
+    transition: 0.3s;
+}
+
+.plan-card.active {
+    border: 2px solid #ff4d6d;
+    background: linear-gradient(135deg, #2a0f14, #1a1a1a);
+}
+
+.badge {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: #ff4d6d;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 20px;
+}
+
+.plan-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.off {
+    color: #ff4d6d;
+    font-size: 13px;
+}
+
+.price-box {
+    text-align: right;
+}
+
+.price-box h2 {
+    font-size: 28px;
+}
+
+.old {
+    text-decoration: line-through;
+    color: #777;
+    font-size: 14px;
+}
+
+/* BUTTON */
+.upi-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(90deg, #ff4d6d, #ff7a7a);
+    border: none;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+/* NOTE */
+.note-box {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    text-align: center;
+    color: #aaa;
+}
+
+/* RIGHT */
+.premium-right ul {
+    margin-top: 15px;
+    line-height: 2;
+}
+
+.premium-img-right {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+    .premium-grid {
+        grid-template-columns: 1fr;
+        margin-left: 0 !important;
+    }
+
+    .premium-img-left,
+    .premium-img-right {
+        display: none;
+    }
+}

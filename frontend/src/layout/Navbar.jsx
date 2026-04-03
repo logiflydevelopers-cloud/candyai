@@ -11,6 +11,7 @@ import { FaGem } from "react-icons/fa";
 import Girls from "../image/Girls.svg";
 import Anime from "../image/Anime.svg";
 import Guys from "../image/Guys.svg";
+import TokenIcon from "../image/TokenIcon.svg";
 
 function Navbar({ toggleSidebar, sidebarOpen, setAuthModal }) {
 
@@ -18,6 +19,7 @@ function Navbar({ toggleSidebar, sidebarOpen, setAuthModal }) {
 
   const [profileOpen, setProfileOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
+  const [userPlan, setUserPlan] = useState(null);
 
   const [activeCategory, setActiveCategory] = useState(() => {
     return localStorage.getItem("activeCategory") || "girls";
@@ -41,6 +43,57 @@ function Navbar({ toggleSidebar, sidebarOpen, setAuthModal }) {
 
   const displayName = user?.nickname || "User";
   const firstLetter = displayName.charAt(0).toUpperCase();
+
+  useEffect(() => {
+    // ✅ STEP 1: initial load (login પછી પણ run થશે)
+    fetchUserPlan();
+
+    // ✅ STEP 2: realtime update listener
+    const update = (e) => {
+      if (e.detail) {
+        setUserPlan(e.detail);
+        localStorage.setItem("userPlan", JSON.stringify(e.detail));
+      } else {
+        fetchUserPlan();
+      }
+    };
+
+    window.addEventListener("planUpdated", update);
+
+    return () => window.removeEventListener("planUpdated", update);
+  }, []);
+
+  const fetchUserPlan = async () => {
+    try {
+      // ✅ instant UI
+      const cached = localStorage.getItem("userPlan");
+      if (cached) {
+        setUserPlan(JSON.parse(cached));
+      }
+
+      // ✅ API call
+      const res = await fetch("https://candyai.onrender.com/api/plans/my-plan", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
+
+      const data = await res.json();
+
+      if (data.active) {
+        setUserPlan(data.plan);
+
+        // ✅ cache update
+        localStorage.setItem("userPlan", JSON.stringify(data.plan));
+      } else {
+        setUserPlan(null);
+        localStorage.removeItem("userPlan");
+      }
+
+    } catch {
+      setUserPlan(null);
+    }
+  };
 
   /* ================= OUTSIDE CLICK ================= */
 
@@ -196,11 +249,38 @@ function Navbar({ toggleSidebar, sidebarOpen, setAuthModal }) {
           <div className="profile-container" ref={profileRef}>
 
             <div
-              className="premium-btn-navbar"
-              onClick={() => navigate("/subscription")}
+              onClick={() => navigate(userPlan ? "/tokens" : "/subscription")}
             >
-              <FaGem />
-              Premium 70% OFF
+              {userPlan && !userPlan.isFreePlan ? (
+
+                <>
+                  {/* 💻 DESKTOP */}
+                  <div className="navbar-token-box desktop-only">
+                    <img src={TokenIcon} alt="token" className="token-img" />
+                    <span className="token-text">
+                      Tokens {userPlan?.tokens?.total || userPlan?.planTokens || 0}
+                    </span>
+                    <span className="token-plus">+</span>
+                  </div>
+
+                  {/* 📱 MOBILE */}
+                  <div className="navbar-token-mobile mobile-only">
+                    <img src={TokenIcon} alt="token" className="token-img" />
+                    <span className="token-text">
+                      {userPlan?.tokens?.total || userPlan?.planTokens || 0}
+                    </span>
+                    <span className="token-plus">+</span>
+                  </div>
+                </>
+
+              ) : (
+
+                <div className="premium-btn-navbar">
+                  <FaGem />
+                  Premium 70% OFF
+                </div>
+
+              )}
             </div>
 
             <div

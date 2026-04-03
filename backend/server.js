@@ -3,17 +3,25 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
-const chatRoutes = require("./routes/chatRoutes");
+const callRoutes = require("./routes/callRoutes");
 
 require("dotenv").config();
+require("./cron");
 
 const app = express();
 
+/* ===============================
+   CORS (IMPORTANT FIX)
+=================================*/
 
 app.use(cors({
-  origin: true,
-  credentials: true
+  origin: ["http://localhost:3000", "http://localhost:3001"],
+  credentials: true,
 }));
+
+/* ===============================
+   MIDDLEWARE
+=================================*/
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -34,10 +42,21 @@ app.use(passport.session());
 =================================*/
 
 app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/characters", require("./routes/characterRoutes"));  
+app.use("/api/characters", require("./routes/characterRoutes"));
 app.use("/api/banner", require("./routes/bannerRoutes"));
 app.use("/api/story", require("./routes/storyRoutes"));
 app.use("/api/chat", require("./routes/chatRoutes"));
+
+// 🔥 NEW (Plans system add)
+app.use("/api/plans", require("./routes/planRoutes"));
+app.use("/api/tokens", require("./routes/tokenRoutes"));
+app.use("/api/call", callRoutes);
+
+
+
+/* ===============================
+   TEST ROUTE
+=================================*/
 
 app.get("/", (req, res) => {
   res.json({ success: true, message: "Backend running 🚀" });
@@ -47,7 +66,10 @@ app.get("/", (req, res) => {
    DATABASE
 =================================*/
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => console.log("MongoDB Connected ✅"))
   .catch(err => console.log(err));
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import API from "../api/axios";
 import toast from "react-hot-toast";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -15,6 +15,7 @@ import GenerateIcon from "../image/Generate Image.svg";
 import CreateIcon from "../image/Create Character.svg";
 import MyAiIcon from "../image/My AI.svg";
 import PremiumIcon from "../image/Premium.svg";
+import TokenIcon from "../image/TokenIcon.svg";
 import LanguageIcon from "../image/Language.svg";
 
 function Sidebar({ open, disableTransition, setSidebarOpen }) {
@@ -23,6 +24,7 @@ function Sidebar({ open, disableTransition, setSidebarOpen }) {
   const location = useLocation();
   const isPremiumActive = location.pathname === "/premium";
   const [profileOpen, setProfileOpen] = useState(false);
+  const [userPlan, setUserPlan] = useState(null);
 
   // 🔥 Detect Active Category from URL
   const getActiveCategory = () => {
@@ -48,6 +50,51 @@ function Sidebar({ open, disableTransition, setSidebarOpen }) {
     localStorage.removeItem("user");
     navigate("/");
     window.dispatchEvent(new Event("openLogin"));
+  };
+
+  useEffect(() => {
+    fetchUserPlan();
+  }, []);
+
+  useEffect(() => {
+    const update = (e) => {
+      if (e.detail) {
+        setUserPlan(e.detail);
+        localStorage.setItem("userPlan", JSON.stringify(e.detail));
+      } else {
+        fetchUserPlan();
+      }
+    };
+
+    window.addEventListener("planUpdated", update);
+
+    return () => window.removeEventListener("planUpdated", update);
+  }, []);
+
+  const fetchUserPlan = async () => {
+    try {
+      // ✅ STEP 1: instant UI from localStorage
+      const cached = localStorage.getItem("userPlan");
+      if (cached) {
+        setUserPlan(JSON.parse(cached));
+      }
+
+      // ✅ STEP 2: API call
+      const res = await API.get("/plans/my-plan");
+
+      if (res.data.active) {
+        setUserPlan(res.data.plan);
+
+        // ✅ cache update
+        localStorage.setItem("userPlan", JSON.stringify(res.data.plan));
+      } else {
+        setUserPlan(null);
+        localStorage.removeItem("userPlan");
+      }
+
+    } catch (err) {
+      setUserPlan(null);
+    }
   };
 
   const menuItems = [
@@ -105,7 +152,20 @@ function Sidebar({ open, disableTransition, setSidebarOpen }) {
           >
             <div
               className="sidebar-sub-item"
-              onClick={() => navigate("/subscription")}
+              onClick={async () => {
+                try {
+                  const res = await API.get("/plans/my-plan");
+
+                  if (res.data.active && !res.data.plan?.isFreePlan) {
+                    navigate("/tokens");
+                  } else {
+                    navigate("/premium");
+                  }
+
+                } catch {
+                  navigate("/premium");
+                }
+              }}
             >
               <FaGem /> Subscription
             </div>
@@ -202,15 +262,56 @@ function Sidebar({ open, disableTransition, setSidebarOpen }) {
       {/* PREMIUM */}
       <div
         className={`sidebar-item premium-btn-sidebar ${isPremiumActive ? "active-premium" : ""}`}
-        onClick={() => navigate("/premium")}
+        onClick={async () => {
+          const token = localStorage.getItem("token");
+
+          if (!token) {
+            window.dispatchEvent(new Event("openLogin"));
+            return;
+          }
+
+          try {
+            const res = await API.get("/plans/my-plan");
+
+            if (res.data.active) {
+              navigate("/tokens");
+            } else {
+              navigate("/premium");
+            }
+
+          } catch {
+            navigate("/premium");
+          }
+
+          setSidebarOpen(false);
+        }}
       >
-        <img src={PremiumIcon} alt="" className="sidebar-icon" />
-        {open && (
-          <>
-            <span className="text premium-text">Premium</span>
-            <span className="premium-badge">70% OFF</span>
-          </>
-        )}
+        <div className="premium-inner">
+
+          {/* 🔥 CHANGE ICON BASED ON SIDEBAR */}
+          <img
+            src={userPlan && !userPlan.isFreePlan ? TokenIcon : PremiumIcon}
+            alt=""
+            className={`sidebar-icon ${!open ? "collapsed-icon" : ""}`}
+          />
+
+          {/* 🔥 TEXT ONLY WHEN OPEN */}
+          {open && (
+            <>
+              {userPlan && !userPlan.isFreePlan ? (
+                <>
+                  <span className="text premium-text">Buy Tokens</span>
+                </>
+              ) : (
+                <>
+                  <span className="text premium-text">Premium</span>
+                  <span className="premium-badge">-60%</span>
+                </>
+              )}
+            </>
+          )}
+
+        </div>
       </div>
 
       <div className="sidebar-bottom">

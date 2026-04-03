@@ -48,6 +48,8 @@ import Exemption2257 from "./pages/legal/Exemption2257";
 import CommunityGuidelines from "./pages/legal/CommunityGuidelines";
 
 import Discover from "./pages/Discover";
+import Premium from "./pages/premium";
+import Tokens from "./pages/Tokens";
 
 
 
@@ -190,6 +192,27 @@ function AppContent() {
           <Route
             path="/discover"
             element={<Discover sidebarOpen={sidebarOpen} />}
+          />
+
+          <Route
+            path="/premium"
+            element={
+              <ProtectedRoute setAuthModal={setAuthModal}>
+                <Premium sidebarOpen={sidebarOpen} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/tokens"
+            element={
+              <ProtectedRoute
+                setAuthModal={setAuthModal}
+                requirePaid={true}
+              >
+                <Tokens />
+              </ProtectedRoute>
+            }
           />
 
 

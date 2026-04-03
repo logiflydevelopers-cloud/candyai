@@ -140,7 +140,7 @@ function ChatMessages({ character, messages, setMessages }) {
             text: "🔥 Send me a naughty video",
             createdAt: new Date()
         }
-
+        
         setMessages(prev => [...prev, userMessage])
 
 

@@ -17,15 +17,28 @@ API.interceptors.request.use((config) => {
 API.interceptors.response.use(
   res => res,
   err => {
+
     if (err.response?.status === 401) {
+
+      const url = err.config?.url;
+
+      // 🔥 IGNORE my-plan 401 silently
+      if (url?.includes("/plans/my-plan")) {
+        console.log("Ignore 401 from my-plan");
+
+        return Promise.resolve({
+          data: {
+            active: false,
+            plan: null
+          }
+        });
+      }
+
+      // ❌ real auth fail → logout
       localStorage.removeItem("token");
-
-      // 🔥 React friendly redirect
       window.dispatchEvent(new Event("openLogin"));
-
-      // ❗ DO NOT hard redirect
-      // window.location.href = "/login";
     }
+
     return Promise.reject(err);
   }
 );
